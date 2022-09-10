@@ -1,7 +1,7 @@
 package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.IntegrationTest;
-import com.kenzie.appserver.controller.model.ExampleCreateRequest;
+import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
 import com.kenzie.appserver.service.ExampleService;
 import com.kenzie.appserver.service.model.Example;
 
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @IntegrationTest
-class ExampleControllerTest {
+class FreelancerControllerTest {
     @Autowired
     private MockMvc mvc;
 
@@ -51,15 +51,15 @@ class ExampleControllerTest {
     public void createExample_CreateSuccessful() throws Exception {
         String name = mockNeat.strings().valStr();
 
-        ExampleCreateRequest exampleCreateRequest = new ExampleCreateRequest();
-        exampleCreateRequest.setName(name);
+        FreelancerCreateRequest freelancerCreateRequest = new FreelancerCreateRequest();
+        freelancerCreateRequest.setName(name);
 
         mapper.registerModule(new JavaTimeModule());
 
         mvc.perform(post("/example")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(exampleCreateRequest)))
+                        .content(mapper.writeValueAsString(freelancerCreateRequest)))
                 .andExpect(jsonPath("id")
                         .exists())
                 .andExpect(jsonPath("name")
