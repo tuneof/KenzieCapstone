@@ -1,6 +1,7 @@
 package com.kenzie.appserver.service;
 
 import com.kenzie.appserver.repositories.FreelancerRepository;
+import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 
@@ -28,6 +29,10 @@ public class FreelancerService {
     }
 
     public Freelancer addNewFreelancer(Freelancer freelancer) {
+        if (freelancer == null) {
+            throw new IllegalArgumentException();
+        }
+
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
         freelancerRecord.setCreatedAt(ZonedDateTime.now());
@@ -59,13 +64,11 @@ public class FreelancerService {
     }
 
     private Freelancer toFreelancer(FreelancerRecord record) {
-        Freelancer freelancer = new Freelancer(record.getId,
-                record.getName,
-                record.getExpertise,
-                record.getRate,
-                record.getLocation,
-                record.getContact);
-
-        return freelancer;
+        return new Freelancer(record.getId(),
+                record.getName(),
+                record.getExpertise(),
+                record.getRate(),
+                record.getLocation(),
+                record.getContact());
     }
 }
