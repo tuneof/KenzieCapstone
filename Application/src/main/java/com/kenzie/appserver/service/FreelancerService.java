@@ -29,6 +29,10 @@ public class FreelancerService {
     }
 
     public Freelancer addNewFreelancer(Freelancer freelancer) {
+        if (freelancer == null) {
+            throw new IllegalArgumentException();
+        }
+
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
         freelancerRecord.setCreatedAt(ZonedDateTime.now());

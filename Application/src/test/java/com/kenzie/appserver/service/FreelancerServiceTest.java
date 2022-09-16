@@ -7,6 +7,7 @@ import com.kenzie.capstone.service.client.LambdaServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FreelancerServiceTest {
     private FreelancerRepository freelancerRepository;
@@ -118,5 +118,38 @@ public class FreelancerServiceTest {
         }
     }
 
+    @Test
+    void addNewFreelancer() {
+        String id = randomUUID().toString();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        Freelancer freelancer = new Freelancer(id, name, expertise, rate, location, contact);
+        ArgumentCaptor<FreelancerRecord> freelancerRecordCaptor = ArgumentCaptor.forClass(FreelancerRecord.class);
+
+        Freelancer returnedFreelancer = freelancerService.addNewFreelancer(freelancer);
+
+        Assertions.assertNotNull(returnedFreelancer);
+
+        verify(freelancerRepository).save(freelancerRecordCaptor.capture());
+
+        FreelancerRecord record = freelancerRecordCaptor.getValue();
+
+        Assertions.assertNotNull(record, "The freelancer record is returned and saved");
+        Assertions.assertEquals(record.getId(), id, "The freelancer id matches");
+        Assertions.assertEquals(record.getName(), name, "The freelancer name matches");
+        Assertions.assertEquals(record.getExpertise(), expertise, "The freelancer's expertise matches");
+        Assertions.assertEquals(record.getRate(), rate, "The freelancer rate matches");
+        Assertions.assertEquals(record.getLocation(), location, "The freelancer location matches");
+        Assertions.assertEquals(record.getContact(), contact, "The freelancer contact matches");
+    }
+
+    @Test
+    void addNewFreelancer_freelancer_null() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> freelancerService.addNewFreelancer(null));
+    }
 
 }
