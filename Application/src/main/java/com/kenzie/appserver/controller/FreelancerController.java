@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +57,7 @@ public class FreelancerController {
         }
 
         List<FreelancerResponse> responses = freelancers.stream()
-                .map(freelancer -> freelancerToResponse(freelancer))
+                .map(this::freelancerToResponse)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responses);
