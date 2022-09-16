@@ -17,7 +17,15 @@ public class FreelancerService {
     }
 
     public Freelancer findById(String id){
-        return null;
+        return freelancerRepository
+                .findById(id)
+                .map(freelancer -> new Freelancer(freelancer.getId(),
+                        freelancer.getName(),
+                        freelancer.getExpertise(),
+                        freelancer.getRate(),
+                        freelancer.getLocation(),
+                        freelancer.getContact()))
+                .orElse(null);
     }
 
     public List<Freelancer> findAll(){

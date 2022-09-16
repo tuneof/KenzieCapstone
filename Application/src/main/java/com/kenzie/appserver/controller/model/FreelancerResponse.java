@@ -29,7 +29,7 @@ public class FreelancerResponse {
         return id;
     }
 
-    public void setId(String freelancerId) {
+    public void setId(String id) {
         this.id = id;
     }
 
