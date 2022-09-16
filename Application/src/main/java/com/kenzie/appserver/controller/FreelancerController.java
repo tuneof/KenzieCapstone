@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Freelancers")
+@RequestMapping("/freelancers")
 public class FreelancerController {
 
     private FreelancerService freelancerService;
@@ -23,12 +23,12 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{freelancerId}")
-    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("freelancerId") String freelancerId) throws Exception {
+    @GetMapping("/{id}")
+    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("id") String id) throws Exception {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<FreelancerResponse>> getAllFreelancers() {
         return ResponseEntity.noContent().build();
     }
@@ -39,8 +39,8 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{freelancerId}")
-    public ResponseEntity deleteFreelancerById(@PathVariable("freelancerId") String freelancerId) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
         return ResponseEntity.noContent().build();
     }
 }

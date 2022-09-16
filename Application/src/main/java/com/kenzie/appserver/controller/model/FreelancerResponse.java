@@ -7,8 +7,8 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FreelancerResponse {
-    @JsonProperty("freelancerId")
-    private String freelancerId;
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("name")
     private String name;
@@ -25,12 +25,12 @@ public class FreelancerResponse {
     @JsonProperty("contact")
     private String contact;
 
-    public String getFreelancerId() {
-        return freelancerId;
+    public String getId() {
+        return id;
     }
 
-    public void setFreelancerId(String freelancerId) {
-        this.freelancerId = freelancerId;
+    public void setId(String freelancerId) {
+        this.id = id;
     }
 
     public String getName() {

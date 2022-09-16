@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 
@@ -16,18 +17,18 @@ public class FreelancerService {
     }
 
     public Freelancer findById(String id){
-        return new Freelancer();
+        return null;
     }
 
     public List<Freelancer> findAll(){
-        return ;
+        return null;
     }
 
     public Freelancer addNewFreelancer(Freelancer freelancer){
-        return ;
+        return null;
     }
 
     public Freelancer updateFreelancer(String id){
-        return ;
+        return null;
     }
 }
