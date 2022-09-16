@@ -1,16 +1,11 @@
 package com.kenzie.appserver.service;
 
-import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static java.util.UUID.randomUUID;
 
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
