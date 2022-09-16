@@ -4,6 +4,7 @@ import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -18,18 +19,13 @@ public class FreelancerService {
         this.lambdaServiceClient = client;
     }
 
-    public FreelancerResponse findFreelancerById(String id){
-        return freelancerRepository.findById(id)
-                .map(this::toFreelancerResponse)
-                .orElse(null);
-    }
+    public List<Freelancer> findAllFreelancers() {
+        List<Freelancer> freelancers = new ArrayList<>();
+        freelancerRepository
+                .findAll()
+                .forEach(freelancer -> freelancers.add(toFreelancer(freelancer)));
 
-    public List<FreelancerResponse> findAllFreeanceers() {
-        List<FreelancerRecord> records = StreamSupport.stream(freelancerRepository.findAll().spliterator(), true).collect(Collectors.toList());
-
-        return records.stream()
-                .map(this::toFreelancerResponse)
-                .collect(Collectors.toList());
+        return freelancers;
     }
 
     public Freelancer addNewFreelancer(Freelancer freelancer){
@@ -40,19 +36,14 @@ public class FreelancerService {
         return ;
     }
 
-    private FreelancerResponse toFreelancerResponse(FreelancerRecord record) {
-        if (record == null) {
-            return null;
-        }
+    private Freelancer toFreelancer(FreelancerRecord record) {
+        Freelancer freelancer = new Freelancer(record.getId,
+                record.getName,
+                record.getExpertise,
+                record.getRate,
+                record.getLocation,
+                record.getContact);
 
-        FreelancerResponse freelancerResponse = new FreelancerResponse();
-        freelancerResponse.setName(record.getName());
-        freelancerResponse.setFreelancerId(record.getFreelancerId);
-        freelancerResponse.setContact(record.getContact);
-        freelancerResponse.setExpertise(record.getExpertise);
-        freelancerResponse.setLocation(record.getLocation);
-        freelancerResponse.setRate(record.getRate);
-
-        return freelancerResponse;
+        return freelancer;
     }
 }
