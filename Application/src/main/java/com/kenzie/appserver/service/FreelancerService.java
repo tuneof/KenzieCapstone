@@ -4,10 +4,13 @@ import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.LambdaServiceClient;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static java.util.UUID.randomUUID;
 
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
@@ -19,7 +22,7 @@ public class FreelancerService {
         this.lambdaServiceClient = client;
     }
 
-    public List<Freelancer> findAllFreelancers() {
+    public List<Freelancer> findAll() {
         List<Freelancer> freelancers = new ArrayList<>();
         freelancerRepository
                 .findAll()
@@ -29,7 +32,18 @@ public class FreelancerService {
     }
 
     public Freelancer addNewFreelancer(Freelancer freelancer){
-        return ;
+        FreelancerRecord freelancerRecord = new FreelancerRecord();
+        freelancerRecord.setId(freelancer.getId());
+        freelancerRecord.setCreatedAt(ZonedDateTime.now());
+        freelancerRecord.setModifiedAt(ZonedDateTime.now());
+        freelancerRecord.setContact(freelancer.getContact());
+        freelancerRecord.setExpertise(freelancer.getExpertise());
+        freelancerRecord.setName(freelancer.getName());
+        freelancerRecord.setRate(freelancer.getRate());
+        freelancerRecord.setLocation(freelancer.getLocation());
+        freelancerRepository.save(freelancerRecord);
+
+        return freelancer;
     }
 
     public Freelancer updateFreelancer(String id){
