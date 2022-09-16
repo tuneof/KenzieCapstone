@@ -6,6 +6,7 @@ import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
 import com.kenzie.appserver.service.FreelancerService;
 import com.kenzie.appserver.service.model.Freelancer;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 import static java.util.UUID.randomUUID;
 
 @RestController
-@RequestMapping("/Freelancers")
+@RequestMapping("/freelancers")
 public class FreelancerController {
 
     private FreelancerService freelancerService;
@@ -41,12 +42,14 @@ public class FreelancerController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/{freelancerId}")
-    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("freelancerId") String freelancerId) throws Exception {
-        return ResponseEntity.noContent().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("id") String id) throws Exception {
+        Freelancer freelancer = freelancerService.findById(id);
+        FreelancerResponse freelancerResponse = freelancerToResponse(freelancer);
+        return ResponseEntity.ok(freelancerResponse);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<FreelancerResponse>> getAllFreelancers() {
         List<Freelancer> freelancers = freelancerService.findAll();
 
@@ -67,8 +70,20 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{freelancerId}")
-    public ResponseEntity deleteFreelancerById(@PathVariable("freelancerId") String freelancerId) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
         return ResponseEntity.noContent().build();
+    }
+
+    private FreelancerResponse freelancerToResponse(Freelancer freelancer) {
+        FreelancerResponse freelancerResponse = new FreelancerResponse();
+        freelancerResponse.setId(freelancer.getId());
+        freelancerResponse.setName(freelancer.getName());
+        freelancerResponse.setExpertise(freelancer.getExpertise());
+        freelancerResponse.setContact(freelancer.getContact());
+        freelancerResponse.setLocation(freelancer.getLocation());
+        freelancerResponse.setRate(freelancer.getRate());
+
+        return freelancerResponse;
     }
 }
