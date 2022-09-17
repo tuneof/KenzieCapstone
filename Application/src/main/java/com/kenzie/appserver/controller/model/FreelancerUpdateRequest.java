@@ -6,6 +6,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class FreelancerUpdateRequest {
+
+    @NotEmpty
+    @JsonProperty("id")
+    private String id;
+
     @NotEmpty
     @JsonProperty("name")
     private String name;
@@ -25,6 +30,10 @@ public class FreelancerUpdateRequest {
     @NotEmpty
     @JsonProperty("contact")
     private String contact;
+
+    public String getId() { return this.id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getName() {
         return name;
