@@ -84,4 +84,8 @@ public class FreelancerService {
                 record.getLocation(),
                 record.getContact());
     }
+
+    public void deleteFreelancer(String id){
+        freelancerRepository.deleteFreelancer(id);
+    }
 }
