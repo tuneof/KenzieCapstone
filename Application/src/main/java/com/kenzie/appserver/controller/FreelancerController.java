@@ -87,7 +87,8 @@ public class FreelancerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
-        return ResponseEntity.noContent().build();
+        freelancerService.deleteFreelancer(id);
+        return ResponseEntity.ok().build();
     }
 
     private FreelancerResponse freelancerToResponse(Freelancer freelancer) {
