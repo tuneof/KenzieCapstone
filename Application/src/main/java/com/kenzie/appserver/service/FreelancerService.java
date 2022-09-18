@@ -32,6 +32,6 @@ public class FreelancerService {
     }
 
     public void deleteFreelancer(String id){
-        freelancerRepository.deleteFreelancer(id);
+        freelancerRepository.deleteById(id);
     }
 }
