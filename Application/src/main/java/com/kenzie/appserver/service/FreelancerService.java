@@ -59,8 +59,21 @@ public class FreelancerService {
                 .orElse(null);
     }
 
-    public Freelancer updateFreelancer(String id) {
-        return null;
+    public void updateFreelancer(Freelancer freelancer) {
+        freelancerRepository.save(toRecord(freelancer));
+    }
+
+    private FreelancerRecord toRecord(Freelancer freelancer) {
+        FreelancerRecord freelancerRecord = new FreelancerRecord();
+        freelancerRecord.setId(freelancer.getId());
+        freelancerRecord.setCreatedAt(ZonedDateTime.now());
+        freelancerRecord.setModifiedAt(ZonedDateTime.now());
+        freelancerRecord.setContact(freelancer.getContact());
+        freelancerRecord.setExpertise(freelancer.getExpertise());
+        freelancerRecord.setName(freelancer.getName());
+        freelancerRecord.setRate(freelancer.getRate());
+        freelancerRecord.setLocation(freelancer.getLocation());
+        return freelancerRecord;
     }
 
     private Freelancer toFreelancer(FreelancerRecord record) {

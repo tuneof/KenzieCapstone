@@ -29,7 +29,7 @@ public class FreelancerServiceTest {
         freelancerService = new FreelancerService(freelancerRepository, lambdaServiceClient);
     }
     /** ------------------------------------------------------------------------
-     *  exampleService.findById
+     *  FreelancerService.findById
      *  ------------------------------------------------------------------------ **/
 
     @Test
@@ -152,4 +152,43 @@ public class FreelancerServiceTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> freelancerService.addNewFreelancer(null));
     }
 
+    /** ------------------------------------------------------------------------
+     *  freelancerService.updateFreelancer
+     *  ------------------------------------------------------------------------ **/
+
+    @Test
+    void updateFreelancer_success() {
+        //GIVEN
+        String id = randomUUID().toString();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        FreelancerRecord record = new FreelancerRecord();
+        record.setId(id);
+        record.setName(name);
+        record.setExpertise(expertise);
+        record.setRate(rate);
+        record.setLocation(location);
+        record.setContact(contact);
+
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.of(record));
+
+        //WHEN
+        freelancerService.updateFreelancer(expectedFreelancer);
+
+        //THEN
+        Freelancer actualFreelancer = freelancerService.findById(id);
+        verify(freelancerRepository, times(1)).save(any());
+        Assertions.assertEquals(actualFreelancer.getId(), expectedFreelancer.getId());
+        Assertions.assertEquals(actualFreelancer.getName(), expectedFreelancer.getName());
+        Assertions.assertEquals(actualFreelancer.getExpertise(), expectedFreelancer.getExpertise());
+        Assertions.assertEquals(actualFreelancer.getRate(), expectedFreelancer.getRate());
+        Assertions.assertEquals(actualFreelancer.getLocation(), expectedFreelancer.getLocation());
+        Assertions.assertEquals(actualFreelancer.getContact(), expectedFreelancer.getContact());
+    }
 }

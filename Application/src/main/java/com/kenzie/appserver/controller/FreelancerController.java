@@ -66,7 +66,23 @@ public class FreelancerController {
 
     @PutMapping
     public ResponseEntity<FreelancerResponse> updateFreelancer(@RequestBody FreelancerUpdateRequest request) {
-        return ResponseEntity.noContent().build();
+        //if the freelancer that is being updated doesn't exist, returns 204
+        if (freelancerService.findById(request.getId()) == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        //Otherwise, continue executing method
+        Freelancer freelancer = new Freelancer(request.getId(),
+                request.getName(),
+                request.getExpertise(),
+                request.getRate(),
+                request.getLocation(),
+                request.getContact());
+        freelancerService.updateFreelancer(freelancer);
+
+        FreelancerResponse response = freelancerToResponse(freelancer);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
