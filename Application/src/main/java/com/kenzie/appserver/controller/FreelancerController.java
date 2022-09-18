@@ -39,9 +39,9 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{freelancerId}")
-    public ResponseEntity deleteFreelancerById(@PathVariable("freelancerId") String freelancerId) {
-        freelancerService.deleteFreelancer(freelancerId);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
+        freelancerService.deleteFreelancer(id);
         return ResponseEntity.ok().build();
     }
 }
