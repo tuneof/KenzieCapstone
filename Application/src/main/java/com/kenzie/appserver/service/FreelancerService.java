@@ -30,4 +30,8 @@ public class FreelancerService {
     public Freelancer updateFreelancer(String id){
         return ;
     }
+
+    public void deleteFreelancer(String id){
+        freelancerRepository.deleteFreelancer(id);
+    }
 }

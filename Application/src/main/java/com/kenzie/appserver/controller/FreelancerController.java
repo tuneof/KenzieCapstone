@@ -41,6 +41,7 @@ public class FreelancerController {
 
     @DeleteMapping("/{freelancerId}")
     public ResponseEntity deleteFreelancerById(@PathVariable("freelancerId") String freelancerId) {
-        return ResponseEntity.noContent().build();
+        freelancerService.deleteFreelancer(freelancerId);
+        return ResponseEntity.ok().build();
     }
 }
