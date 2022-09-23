@@ -1,6 +1,7 @@
 package com.kenzie.appserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.kenzie.appserver.IntegrationTest;
 import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
 import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
@@ -12,10 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kenzie.appserver.service.model.Freelancer;
 import net.andreinc.mockneat.MockNeat;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,8 @@ import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,7 +61,7 @@ class FreelancerControllerTest {
     }
 
     @Test
-    public void createExample_CreateSuccessful() throws Exception {
+    public void createFreelancer_CreateSuccessful() throws Exception {
         String name = mockNeat.strings().valStr();
 
         FreelancerCreateRequest freelancerCreateRequest = new FreelancerCreateRequest();
@@ -75,6 +79,7 @@ class FreelancerControllerTest {
                         .value(is(name)))
                 .andExpect(status().is2xxSuccessful());
     }
+
     @Test
     public void updateFreelancer_updateSuccess() throws Exception {
         String id = randomUUID().toString();
@@ -106,30 +111,42 @@ class FreelancerControllerTest {
     }
 
     @Test
-    public void deleteFreelancer_deleteSuccess() throws Exception {
+    public void getAllFreelancers_success() throws Exception {
         String id = randomUUID().toString();
-        String contact = mockNeat.strings().valStr();
-        List<String> expertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
-        String name = mockNeat.strings().valStr();
-        String rate = mockNeat.strings().valStr();
-        String location = mockNeat.strings().valStr();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
 
-        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+        String id1 = randomUUID().toString();
+        String contact1 = "119";
+        List<String> expertise1 = new ArrayList<>(List.of("no idea", "what"));
+        String name1 = "Bob";
+        String rate1 = "$15";
+        String location1 = "California";
 
-        freelancerService.deleteFreelancer(id);
+        Freelancer freelancer = new Freelancer(id, name, expertise, rate, location, contact);
+        Freelancer freelancer1 = new Freelancer(id1, name1, expertise1, rate1, location1, contact1);
 
-        mvc.perform(delete("/delete/{id}"))
-                .andExpect(jsonPath("id").exists())
+        freelancerService.addNewFreelancer(freelancer);
+        freelancerService.addNewFreelancer(freelancer1);
+
+        ResultActions actions = mvc.perform(get("/freelancers")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
-    }
 
-    @Test
-    public void deleteFreelancer_deleteFail() throws Exception {
-        String id = randomUUID().toString();
-
-        freelancerService.deleteFreelancer(id);
-
-        mvc.perform(delete("/delete/{id}"))
-                .andExpect(status().isNoContent());
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        List<Freelancer> responses = mapper.readValue(responseBody, new TypeReference<List<Freelancer>>() {});
+        Assertions.assertThat(responses.size()).isGreaterThan(0).as("There are responses");
+        for (Freelancer response : responses) {
+            Assertions.assertThat(response.getId()).isNotEmpty().as("The ID is populated");
+            Assertions.assertThat(response.getName()).isNotEmpty().as("The name is populated");
+            Assertions.assertThat(response.getLocation()).isNotEmpty().as("The location is populated");
+            Assertions.assertThat(response.getContact()).isNotEmpty().as("The contact is populated");
+            Assertions.assertThat(response.getExpertise()).isNotEmpty().as("The expertise is populated");
+            Assertions.assertThat(response.getRate()).isNotEmpty().as("The rate is populated");
+        }
     }
 }
