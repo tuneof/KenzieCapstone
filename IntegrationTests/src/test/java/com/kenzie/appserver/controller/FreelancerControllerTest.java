@@ -10,6 +10,7 @@ import com.kenzie.appserver.service.model.Example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.kenzie.appserver.service.model.Freelancer;
 import net.andreinc.mockneat.MockNeat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,16 +114,22 @@ class FreelancerControllerTest {
         String rate = mockNeat.strings().valStr();
         String location = mockNeat.strings().valStr();
 
-        FreelancerUpdateRequest updateRequest = new FreelancerUpdateRequest();
-        updateRequest.setId(id);
-        updateRequest.setName(name);
-        updateRequest.setExpertise(expertise);
-        updateRequest.setRate(rate);
-        updateRequest.setLocation(location);
-        updateRequest.setContact(contact);
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        freelancerService.deleteFreelancer(id);
 
         mvc.perform(delete("/delete/{id}"))
                 .andExpect(jsonPath("id").exists())
                 .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void deleteFreelancer_deleteFail() throws Exception {
+        String id = randomUUID().toString();
+
+        freelancerService.deleteFreelancer(id);
+
+        mvc.perform(delete("/delete/{id}"))
+                .andExpect(status().isNoContent());
     }
 }
