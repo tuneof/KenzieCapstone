@@ -3,7 +3,7 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
-import com.kenzie.capstone.service.client.LambdaServiceClient;
+import com.kenzie.capstone.service.client.HireServiceClient;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.List;
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
 
-    private LambdaServiceClient lambdaServiceClient;
+    private HireServiceClient hireServiceClient;
 
-    public FreelancerService(FreelancerRepository repository, LambdaServiceClient client){
+    public FreelancerService(FreelancerRepository repository, HireServiceClient client){
         this.freelancerRepository = repository;
-        this.lambdaServiceClient = client;
+        this.hireServiceClient = client;
     }
 
     public List<Freelancer> findAll() {

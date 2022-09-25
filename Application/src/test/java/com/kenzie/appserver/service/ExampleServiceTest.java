@@ -3,7 +3,7 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.ExampleRepository;
 import com.kenzie.appserver.repositories.model.ExampleRecord;
 import com.kenzie.appserver.service.model.Example;
-import com.kenzie.capstone.service.client.LambdaServiceClient;
+import com.kenzie.capstone.service.client.HireServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,13 +17,13 @@ import static org.mockito.Mockito.when;
 public class ExampleServiceTest {
     private ExampleRepository exampleRepository;
     private ExampleService exampleService;
-    private LambdaServiceClient lambdaServiceClient;
+    private HireServiceClient hireServiceClient;
 
     @BeforeEach
     void setup() {
         exampleRepository = mock(ExampleRepository.class);
-        lambdaServiceClient = mock(LambdaServiceClient.class);
-        exampleService = new ExampleService(exampleRepository, lambdaServiceClient);
+        hireServiceClient = mock(HireServiceClient.class);
+        exampleService = new ExampleService(exampleRepository, hireServiceClient);
     }
     /** ------------------------------------------------------------------------
      *  exampleService.findById
