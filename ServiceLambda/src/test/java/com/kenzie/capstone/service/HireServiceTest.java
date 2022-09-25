@@ -1,8 +1,8 @@
 package com.kenzie.capstone.service;
 
-import com.kenzie.capstone.service.dao.ExampleDao;
+import com.kenzie.capstone.service.dao.HireDao;
 import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.model.ExampleRecord;
+import com.kenzie.capstone.service.model.HireRecord;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,19 +18,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class LambdaServiceTest {
+class HireServiceTest {
 
     /** ------------------------------------------------------------------------
      *  expenseService.getExpenseById
      *  ------------------------------------------------------------------------ **/
 
-    private ExampleDao exampleDao;
-    private LambdaService lambdaService;
+    private HireDao hireDao;
+    private HireService hireService;
 
     @BeforeAll
     void setup() {
-        this.exampleDao = mock(ExampleDao.class);
-        this.lambdaService = new LambdaService(exampleDao);
+        this.hireDao = mock(HireDao.class);
+        this.hireService = new HireService(hireDao);
     }
 
     @Test
@@ -42,10 +42,10 @@ class LambdaServiceTest {
         String data = "somedata";
 
         // WHEN
-        ExampleData response = this.lambdaService.setExampleData(data);
+        ExampleData response = this.hireService.setExampleData(data);
 
         // THEN
-        verify(exampleDao, times(1)).setExampleData(idCaptor.capture(), dataCaptor.capture());
+        verify(hireDao, times(1)).setExampleData(idCaptor.capture(), dataCaptor.capture());
 
         assertNotNull(idCaptor.getValue(), "An ID is generated");
         assertEquals(data, dataCaptor.getValue(), "The data is saved");
@@ -62,18 +62,18 @@ class LambdaServiceTest {
         // GIVEN
         String id = "fakeid";
         String data = "somedata";
-        ExampleRecord record = new ExampleRecord();
+        HireRecord record = new HireRecord();
         record.setId(id);
         record.setData(data);
 
 
-        when(exampleDao.getExampleData(id)).thenReturn(Arrays.asList(record));
+        when(hireDao.getExampleData(id)).thenReturn(Arrays.asList(record));
 
         // WHEN
-        ExampleData response = this.lambdaService.getExampleData(id);
+        ExampleData response = this.hireService.getExampleData(id);
 
         // THEN
-        verify(exampleDao, times(1)).getExampleData(idCaptor.capture());
+        verify(hireDao, times(1)).getExampleData(idCaptor.capture());
 
         assertEquals(id, idCaptor.getValue(), "The correct id is used");
 
