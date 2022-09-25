@@ -87,6 +87,9 @@ public class FreelancerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
+        if (freelancerService.findById(id) == null) {
+            return ResponseEntity.noContent().build();
+        }
         freelancerService.deleteFreelancer(id);
         return ResponseEntity.ok().build();
     }

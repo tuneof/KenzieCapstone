@@ -205,6 +205,15 @@ public class FreelancerServiceTest {
 
         freelancerService.deleteFreelancer(expectedFreelancer.getId());
 
-        verify(freelancerService).deleteFreelancer(any());
+        verify(freelancerRepository).deleteById(any());
+    }
+
+    @Test
+    void deleteFreelancer_freelancerDoesNotExist(){
+        String id = randomUUID().toString();
+
+        freelancerService.deleteFreelancer(id);
+
+        verify(freelancerRepository).deleteById(id);
     }
 }
