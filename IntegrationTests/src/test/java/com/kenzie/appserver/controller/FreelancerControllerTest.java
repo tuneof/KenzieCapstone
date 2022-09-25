@@ -22,8 +22,7 @@ import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -102,6 +101,28 @@ class FreelancerControllerTest {
                         .exists())
                 .andExpect(jsonPath("name")
                         .value(is(name)))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void deleteFreelancer_deleteSuccess() throws Exception {
+        String id = randomUUID().toString();
+        String contact = mockNeat.strings().valStr();
+        List<String> expertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
+        String name = mockNeat.strings().valStr();
+        String rate = mockNeat.strings().valStr();
+        String location = mockNeat.strings().valStr();
+
+        FreelancerUpdateRequest updateRequest = new FreelancerUpdateRequest();
+        updateRequest.setId(id);
+        updateRequest.setName(name);
+        updateRequest.setExpertise(expertise);
+        updateRequest.setRate(rate);
+        updateRequest.setLocation(location);
+        updateRequest.setContact(contact);
+
+        mvc.perform(delete("/delete/{id}"))
+                .andExpect(jsonPath("id").exists())
                 .andExpect(status().is2xxSuccessful());
     }
 }
