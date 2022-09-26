@@ -191,4 +191,29 @@ public class FreelancerServiceTest {
         Assertions.assertEquals(actualFreelancer.getLocation(), expectedFreelancer.getLocation());
         Assertions.assertEquals(actualFreelancer.getContact(), expectedFreelancer.getContact());
     }
+
+    @Test
+    void deleteFreelancer_freelancerExistsToDelete(){
+        String id = randomUUID().toString();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        freelancerService.deleteFreelancer(expectedFreelancer.getId());
+
+        verify(freelancerRepository).deleteById(any());
+    }
+
+    @Test
+    void deleteFreelancer_freelancerDoesNotExist(){
+        String id = randomUUID().toString();
+
+        freelancerService.deleteFreelancer(id);
+
+        verify(freelancerRepository).deleteById(id);
+    }
 }
