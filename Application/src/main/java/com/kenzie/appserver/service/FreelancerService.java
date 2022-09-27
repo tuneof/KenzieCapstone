@@ -3,7 +3,8 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
-import com.kenzie.capstone.service.client.HireServiceClient;
+import com.kenzie.capstone.service.client.HireStatusServiceClient;
+import com.kenzie.capstone.service.model.HireStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -13,11 +14,11 @@ import java.util.List;
 @Service
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
-    private HireServiceClient hireServiceClient;
+    private HireStatusServiceClient hireStatusServiceClient;
 
-    public FreelancerService(FreelancerRepository repository, HireServiceClient client){
+    public FreelancerService(FreelancerRepository repository, HireStatusServiceClient client){
         this.freelancerRepository = repository;
-        this.hireServiceClient = client;
+        this.hireStatusServiceClient = client;
     }
 
     public List<Freelancer> findAll() {
@@ -58,6 +59,16 @@ public class FreelancerService {
                         freelancer.getLocation(),
                         freelancer.getContact()))
                 .orElse(null);
+    }
+
+    public String getFreelancerHireStatus(String freelancerId) {
+        HireStatus hireStatus = hireStatusServiceClient.getHireStatus(freelancerId);
+
+        return hireStatus.getStatus();
+    }
+
+    public void setFreelancerHireStatus(String status) {
+        HireStatus hireStatus = hireStatusServiceClient.setHireStatus(status);
     }
 
     public void updateFreelancer(Freelancer freelancer) {

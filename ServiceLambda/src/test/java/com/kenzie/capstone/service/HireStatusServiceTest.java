@@ -1,36 +1,29 @@
 package com.kenzie.capstone.service;
 
-import com.kenzie.capstone.service.dao.HireDao;
-import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.model.HireRecord;
+import com.kenzie.capstone.service.dao.HireStatusDao;
+import com.kenzie.capstone.service.model.HireStatus;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.ArgumentCaptor;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HireServiceTest {
+class HireStatusServiceTest {
 
     /** ------------------------------------------------------------------------
      *  expenseService.getExpenseById
      *  ------------------------------------------------------------------------ **/
 
-    private HireDao hireDao;
-    private HireService hireService;
+    private HireStatusDao hireDao;
+    private HireStatusService hireService;
 
     @BeforeAll
     void setup() {
-        this.hireDao = mock(HireDao.class);
-        this.hireService = new HireService(hireDao);
+        this.hireDao = mock(HireStatusDao.class);
+        this.hireService = new HireStatusService(hireDao);
     }
 
 //    @Test

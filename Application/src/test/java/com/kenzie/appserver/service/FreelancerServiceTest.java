@@ -3,7 +3,7 @@ package com.kenzie.appserver.service;
 import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
-import com.kenzie.capstone.service.client.HireServiceClient;
+import com.kenzie.capstone.service.client.HireStatusServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,12 @@ import static org.mockito.Mockito.*;
 public class FreelancerServiceTest {
     private FreelancerRepository freelancerRepository;
     private FreelancerService freelancerService;
-    private HireServiceClient hireServiceClient;
+    private HireStatusServiceClient hireServiceClient;
 
     @BeforeEach
     void setup() {
         freelancerRepository = mock(FreelancerRepository.class);
-        hireServiceClient = mock(HireServiceClient.class);
+        hireServiceClient = mock(HireStatusServiceClient.class);
         freelancerService = new FreelancerService(freelancerRepository, hireServiceClient);
     }
     /** ------------------------------------------------------------------------

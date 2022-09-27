@@ -1,7 +1,7 @@
 package com.kenzie.capstone.service.dependency;
 
 
-import com.kenzie.capstone.service.dao.HireDao;
+import com.kenzie.capstone.service.dao.HireStatusDao;
 import com.kenzie.capstone.service.util.DynamoDbClientProvider;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -27,10 +27,10 @@ public class DaoModule {
 
     @Singleton
     @Provides
-    @Named("HireDao")
+    @Named("HireStatusDao")
     @Inject
-    public HireDao provideExampleDao(@Named("DynamoDBMapper") DynamoDBMapper mapper) {
-        return new HireDao(mapper);
+    public HireStatusDao provideExampleDao(@Named("DynamoDBMapper") DynamoDBMapper mapper) {
+        return new HireStatusDao(mapper);
     }
 
 }

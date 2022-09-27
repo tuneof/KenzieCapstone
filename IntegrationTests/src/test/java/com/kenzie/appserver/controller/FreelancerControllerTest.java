@@ -75,14 +75,22 @@ class FreelancerControllerTest {
 
     @Test
     public void createFreelancer_CreateSuccessful() throws Exception {
-        String name = mockNeat.strings().valStr();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
 
         FreelancerCreateRequest freelancerCreateRequest = new FreelancerCreateRequest();
         freelancerCreateRequest.setName(name);
+        freelancerCreateRequest.setContact(contact);
+        freelancerCreateRequest.setExpertise(expertise);
+        freelancerCreateRequest.setRate(rate);
+        freelancerCreateRequest.setLocation(location);
 
         mapper.registerModule(new JavaTimeModule());
 
-        mvc.perform(post("/example")
+        mvc.perform(post("/freelancers")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(freelancerCreateRequest)))
@@ -90,7 +98,16 @@ class FreelancerControllerTest {
                         .exists())
                 .andExpect(jsonPath("name")
                         .value(is(name)))
+                .andExpect(jsonPath("expertise")
+                        .value(is(expertise)))
+                .andExpect(jsonPath("rate")
+                        .value(is(rate)))
+                .andExpect(jsonPath("location")
+                        .value(is(location)))
+                .andExpect(jsonPath("contact")
+                        .value(is(contact)))
                 .andExpect(status().is2xxSuccessful());
+
     }
 
     @Test
@@ -139,16 +156,37 @@ class FreelancerControllerTest {
         String rate1 = "$15";
         String location1 = "California";
 
-        Freelancer freelancer = new Freelancer(id, name, expertise, rate, location, contact);
-        Freelancer freelancer1 = new Freelancer(id1, name1, expertise1, rate1, location1, contact1);
+        FreelancerCreateRequest freelancerCreateRequest = new FreelancerCreateRequest();
+        freelancerCreateRequest.setName(name);
+        freelancerCreateRequest.setContact(contact);
+        freelancerCreateRequest.setExpertise(expertise);
+        freelancerCreateRequest.setRate(rate);
+        freelancerCreateRequest.setLocation(location);
 
-        freelancerService.addNewFreelancer(freelancer);
-        freelancerService.addNewFreelancer(freelancer1);
+        FreelancerCreateRequest freelancerCreateRequest1 = new FreelancerCreateRequest();
+        freelancerCreateRequest.setName(name1);
+        freelancerCreateRequest.setContact(contact1);
+        freelancerCreateRequest.setExpertise(expertise1);
+        freelancerCreateRequest.setRate(rate1);
+        freelancerCreateRequest.setLocation(location1);
+
+        mapper.registerModule(new JavaTimeModule());
+
+        mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(freelancerCreateRequest)))
+                .andExpect(status().is2xxSuccessful());
+
+        mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(freelancerCreateRequest1)))
+                .andExpect(status().is2xxSuccessful());
 
         ResultActions actions = mvc.perform(get("/freelancers")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is2xxSuccessful());
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
         String responseBody = actions.andReturn().getResponse().getContentAsString();
         List<Freelancer> responses = mapper.readValue(responseBody, new TypeReference<List<Freelancer>>() {});

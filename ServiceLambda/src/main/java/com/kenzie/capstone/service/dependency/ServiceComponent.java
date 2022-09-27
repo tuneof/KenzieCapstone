@@ -1,7 +1,6 @@
 package com.kenzie.capstone.service.dependency;
 
-import com.kenzie.capstone.service.HireService;
-
+import com.kenzie.capstone.service.HireStatusService;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -12,5 +11,5 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {DaoModule.class, ServiceModule.class})
 public interface ServiceComponent {
-    HireService provideHireService();
+    HireStatusService provideHireStatusService();
 }

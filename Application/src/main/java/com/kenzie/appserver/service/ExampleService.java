@@ -1,23 +1,20 @@
-package com.kenzie.appserver.service;
-
-import com.kenzie.appserver.repositories.model.ExampleRecord;
-import com.kenzie.appserver.repositories.ExampleRepository;
-import com.kenzie.appserver.service.model.Example;
-
-import com.kenzie.capstone.service.client.HireServiceClient;
-import com.kenzie.capstone.service.model.ExampleData;
-import org.springframework.stereotype.Service;
-
-@Service
-public class ExampleService {
-    private ExampleRepository exampleRepository;
-    private HireServiceClient hireServiceClient;
-
-    public ExampleService(ExampleRepository exampleRepository, HireServiceClient hireServiceClient) {
-        this.exampleRepository = exampleRepository;
-        this.hireServiceClient = hireServiceClient;
-    }
-
+//package com.kenzie.appserver.service;
+//
+//import com.kenzie.appserver.repositories.ExampleRepository;
+//
+//import com.kenzie.appserver.repositories.model.FreelancerRecord;
+//import org.springframework.stereotype.Service;
+//
+//@Service
+//public class ExampleService {
+//    private ExampleRepository exampleRepository;
+//    private HireServiceClient hireServiceClient;
+//
+//    public ExampleService(ExampleRepository exampleRepository, HireServiceClient hireServiceClient) {
+//        this.exampleRepository = exampleRepository;
+//        this.hireServiceClient = hireServiceClient;
+//    }
+//
 //    public Example findById(String id) {
 //
 //        // Example getting data from the lambda
@@ -32,7 +29,7 @@ public class ExampleService {
 //        return dataFromDynamo;
 //    }
 //
-//    public Example addNewExample(String name) {
+//    public Example setHireStatus(Freelancer freelancer) {
 //        // Example sending data to the lambda
 //        ExampleData dataFromLambda = hireServiceClient.setExampleData(name);
 //
@@ -44,5 +41,11 @@ public class ExampleService {
 //
 //        Example example = new Example(dataFromLambda.getId(), name);
 //        return example;
+//
+//
+//        HireStatus dataFromLambda = hireServiceClient.setHireStatus(status);
+//        FreelancerRecord record = new FreelancerRecord();
+//
+//
 //    }
-}
+//}

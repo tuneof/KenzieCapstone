@@ -1,8 +1,7 @@
 package com.kenzie.capstone.service.dependency;
 
-import com.kenzie.capstone.service.HireService;
-import com.kenzie.capstone.service.dao.HireDao;
-
+import com.kenzie.capstone.service.HireStatusService;
+import com.kenzie.capstone.service.dao.HireStatusDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,8 +17,8 @@ public class ServiceModule {
     @Singleton
     @Provides
     @Inject
-    public HireService provideHireService(@Named("HireDao") HireDao hireDao) {
-        return new HireService(hireDao);
+    public HireStatusService provideHireService(@Named("HireStatusDao") HireStatusDao hireDao) {
+        return new HireStatusService(hireDao);
     }
 }
 
