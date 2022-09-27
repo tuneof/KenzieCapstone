@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kenzie.capstone.service.model.HireStatus;
 
 public class HireStatusServiceClient {
-    private static final String GET_HIRESTATUS_ENDPOINT = "hirestatus/{freelancerId}";
-    private static final String SET_HIRESTATUS_ENDPOINT = "hirestatus";
+    private static final String GET_HIRESTATUS_ENDPOINT = "status/{id}";
+    private static final String SET_HIRESTATUS_ENDPOINT = "status";
 
     private ObjectMapper mapper;
 
@@ -15,7 +15,7 @@ public class HireStatusServiceClient {
 
     public HireStatus getHireStatus(String freelancerId) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.getEndpoint(GET_HIRESTATUS_ENDPOINT.replace("{freelancerId}", freelancerId));
+        String response = endpointUtility.getEndpoint(GET_HIRESTATUS_ENDPOINT.replace("{id}", freelancerId));
         HireStatus hireStatus;
         try {
             hireStatus = mapper.readValue(response, HireStatus.class);
