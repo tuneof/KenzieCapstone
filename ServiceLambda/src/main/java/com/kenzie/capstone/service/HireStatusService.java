@@ -25,9 +25,9 @@ public class HireStatusService {
         return null;
     }
 
-    public HireStatus setHireStatus(String freelancerId, String status) {
-        String id = UUID.randomUUID().toString();
-        HireStatusRecord record = hireStatusDao.setHireStatus(freelancerId, status);
-        return new HireStatus(freelancerId, id, status);
-    }
+//    public HireStatus setHireStatus(String freelancerId, String status) {
+//        String id = UUID.randomUUID().toString();
+//        HireStatusRecord record = hireStatusDao.setHireStatus(freelancerId, status);
+//        return new HireStatus(freelancerId, id, status);
+//    }
 }
