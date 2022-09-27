@@ -3,8 +3,10 @@ package com.kenzie.appserver.controller;
 import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
 import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
+import com.kenzie.appserver.controller.model.HireStatusResponse;
 import com.kenzie.appserver.service.FreelancerService;
 import com.kenzie.appserver.service.model.Freelancer;
+import com.kenzie.capstone.service.model.HireStatus;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -48,7 +50,7 @@ public class FreelancerController {
         return ResponseEntity.ok(freelancerResponse);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<FreelancerResponse>> getAllFreelancers() {
         List<Freelancer> freelancers = freelancerService.findAll();
 
@@ -64,7 +66,7 @@ public class FreelancerController {
     }
 
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<FreelancerResponse> updateFreelancer(@RequestBody FreelancerUpdateRequest request) {
         //if the freelancer that is being updated doesn't exist, returns 204
         if (freelancerService.findById(request.getId()) == null) {
@@ -85,13 +87,20 @@ public class FreelancerController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
         if (freelancerService.findById(id) == null) {
             return ResponseEntity.noContent().build();
         }
         freelancerService.deleteFreelancer(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/status")
+    public ResponseEntity<HireStatusResponse> getHireStatus(@PathVariable("id") String id) {
+        HireStatusResponse hireStatusResponse = new HireStatusResponse();
+        hireStatusResponse.setStatus(freelancerService.getFreelancerHireStatus(id));
+        return ResponseEntity.ok(hireStatusResponse);
     }
 
     private FreelancerResponse freelancerToResponse(Freelancer freelancer) {

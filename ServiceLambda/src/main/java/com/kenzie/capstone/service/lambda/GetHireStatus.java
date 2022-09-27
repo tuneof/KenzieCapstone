@@ -6,39 +6,49 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kenzie.capstone.service.HireService;
-import com.kenzie.capstone.service.converter.JsonStringToHireConverter;
+import com.kenzie.capstone.service.HireStatusService;
 import com.kenzie.capstone.service.dependency.DaggerServiceComponent;
 import com.kenzie.capstone.service.dependency.ServiceComponent;
 import com.kenzie.capstone.service.exceptions.InvalidDataException;
-import com.kenzie.capstone.service.model.HireRequest;
-import com.kenzie.capstone.service.model.HireResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AddHire implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+import java.util.HashMap;
+import java.util.Map;
+
+public class GetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     static final Logger log = LogManager.getLogger();
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        JsonStringToHireConverter jsonStringToHireConverter = new JsonStringToHireConverter();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         // Logging the request json to make debugging easier.
         log.info(gson.toJson(input));
 
         ServiceComponent serviceComponent = DaggerServiceComponent.create();
-        HireService hireService = serviceComponent.provideHireService();
+        HireStatusService hireService = serviceComponent.provideHireStatusService();
 
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
+                .withHeaders(headers);
+
+        String freelancerId = input.getPathParameters().get("freelancerId");
+
+        if (freelancerId == null || freelancerId.length() == 0) {
+            return response
+                    .withStatusCode(400)
+                    .withBody("Freelancer Id is invalid");
+        }
 
         try {
-            HireRequest hireRequest = jsonStringToHireConverter.convert(input.getBody());
-            HireResponse hireResponse = hireService.addHire(hireRequest);
+            String output = gson.toJson(hireService.getHireStatus(freelancerId));
             return response
                     .withStatusCode(200)
-                    .withBody(gson.toJson(hireResponse));
+                    .withBody(output);
         } catch (InvalidDataException e) {
             return response
                     .withStatusCode(400)
