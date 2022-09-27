@@ -14,8 +14,8 @@ public class FreelancerController {
 
     private FreelancerService freelancerService;
 
-    FreelancerController(FreelancerService service) {
-        this.freelancerService = service;
+    FreelancerController(FreelancerService freelancerService) {
+        this.freelancerService = freelancerService;
     }
 
     @PostMapping

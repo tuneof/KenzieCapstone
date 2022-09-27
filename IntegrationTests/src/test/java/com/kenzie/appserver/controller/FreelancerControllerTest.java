@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kenzie.appserver.IntegrationTest;
 import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
+import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
-import com.kenzie.appserver.service.ExampleService;
 import com.kenzie.appserver.service.FreelancerService;
-import com.kenzie.appserver.service.model.Example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,8 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
@@ -38,7 +37,6 @@ class FreelancerControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    ExampleService exampleService;
     FreelancerService freelancerService;
 
     private final MockNeat mockNeat = MockNeat.threadLocal();
@@ -47,17 +45,33 @@ class FreelancerControllerTest {
 
     @Test
     public void getById_Exists() throws Exception {
+        FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
+        createRequest.setName("Behzod");
+        createRequest.setContact("bmamadiev@gmail.com");
+        createRequest.setRate("45/hour");
+        createRequest.setLocation("Washington DC");
+        createRequest.setExpertise(new ArrayList<>(Arrays.asList("Java", "JavaScript", "HTML", "DynamoDB", "HTML")));
 
-        String name = mockNeat.strings().valStr();
+        mapper.registerModule(new JavaTimeModule());
 
-        Example persistedExample = exampleService.addNewExample(name);
-        mvc.perform(get("/example/{id}", persistedExample.getId())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("id")
-                        .isString())
-                .andExpect(jsonPath("name")
-                        .value(is(name)))
-                .andExpect(status().is2xxSuccessful());
+        String createResponse = mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        FreelancerResponse createFreelancerResponse = mapper.readValue(createResponse, new TypeReference<FreelancerResponse>() {} );
+        String id = createFreelancerResponse.getId();
+
+        mvc.perform(get("/freelancers/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(status().isOk());
+        //clean up
+//        mvc.perform(delete("/freelancers/delete/{id}", id))
+//                .andExpect(status().isNoContent());
     }
 
     @Test
