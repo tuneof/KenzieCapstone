@@ -36,7 +36,7 @@ public class GetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-        String freelancerId = input.getPathParameters().get("freelancerId");
+        String freelancerId = input.getPathParameters().get("id");
 
         if (freelancerId == null || freelancerId.length() == 0) {
             return response

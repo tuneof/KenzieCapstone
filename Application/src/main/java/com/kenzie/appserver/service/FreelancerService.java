@@ -69,7 +69,6 @@ public class FreelancerService {
 
     public void setFreelancerHireStatus(String status) {
         HireStatus hireStatus = hireStatusServiceClient.setHireStatus(status);
-
     }
 
     public void updateFreelancer(Freelancer freelancer) {
