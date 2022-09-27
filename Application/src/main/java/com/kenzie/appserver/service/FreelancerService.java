@@ -4,14 +4,15 @@ import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireServiceClient;
+import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
-
     private HireServiceClient hireServiceClient;
 
     public FreelancerService(FreelancerRepository repository, HireServiceClient client){
