@@ -25,8 +25,7 @@ import java.util.List;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -200,5 +199,33 @@ class FreelancerControllerTest {
             Assertions.assertThat(response.getExpertise()).isNotEmpty().as("The expertise is populated");
             Assertions.assertThat(response.getRate()).isNotEmpty().as("The rate is populated");
         }
+    }
+  
+    @Test
+    public void deleteFreelancer_deleteSuccess() throws Exception {
+        String id = randomUUID().toString();
+        String contact = mockNeat.strings().valStr();
+        List<String> expertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
+        String name = mockNeat.strings().valStr();
+        String rate = mockNeat.strings().valStr();
+        String location = mockNeat.strings().valStr();
+
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        freelancerService.deleteFreelancer(id);
+
+        mvc.perform(delete("/delete/{id}"))
+                .andExpect(jsonPath("id").exists())
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void deleteFreelancer_deleteFail() throws Exception {
+        String id = randomUUID().toString();
+
+        freelancerService.deleteFreelancer(id);
+
+        mvc.perform(delete("/delete/{id}"))
+                .andExpect(status().isNoContent());
     }
 }
