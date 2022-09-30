@@ -2,13 +2,21 @@ package com.kenzie.capstone.service;
 
 import com.kenzie.capstone.service.dao.HireStatusDao;
 import com.kenzie.capstone.service.model.HireStatus;
+import com.kenzie.capstone.service.model.HireStatusRecord;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.util.Arrays;
+import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class HireStatusServiceTest {
@@ -26,55 +34,52 @@ class HireStatusServiceTest {
         this.hireService = new HireStatusService(hireDao);
     }
 
-//    @Test
-//    void setDataTest() {
-//        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
-//        ArgumentCaptor<String> dataCaptor = ArgumentCaptor.forClass(String.class);
-//
-//        // GIVEN
-//        String data = "somedata";
-//
-//        // WHEN
-//        //ExampleData response = this.hireService.setExampleData(data);
-//
-//        // THEN
-//        //verify(hireDao, times(1)).setExampleData(idCaptor.capture(), dataCaptor.capture());
-//
-//        assertNotNull(idCaptor.getValue(), "An ID is generated");
-//        assertEquals(data, dataCaptor.getValue(), "The data is saved");
-//
-//        assertNotNull(response, "A response is returned");
-//        assertEquals(idCaptor.getValue(), response.getId(), "The response id should match");
-//        assertEquals(data, response.getData(), "The response data should match");
-//    }
-//
-//    @Test
-//    void getDataTest() {
-//        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
-//
-//        // GIVEN
-//        String id = "fakeid";
-//        String data = "somedata";
-//        HireRecord record = new HireRecord();
-//        record.setId(id);
-//        record.setData(data);
-//
-//
-//        when(hireDao.getExampleData(id)).thenReturn(Arrays.asList(record));
-//
-//        // WHEN
-//        ExampleData response = this.hireService.getExampleData(id);
-//
-//        // THEN
-//        verify(hireDao, times(1)).getExampleData(idCaptor.capture());
-//
-//        assertEquals(id, idCaptor.getValue(), "The correct id is used");
-//
-//        assertNotNull(response, "A response is returned");
-//        assertEquals(id, response.getId(), "The response id should match");
-//        assertEquals(data, response.getData(), "The response data should match");
-//    }
+    @Test
+    void setHireStatusTest() {
+        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> statusCaptor = ArgumentCaptor.forClass(String.class);
 
-    // Write additional tests here
+        // GIVEN
+        String status = "hired";
 
+        // WHEN
+        HireStatus response = this.hireService.setHireStatus(status);
+
+        // THEN
+        verify(hireDao, times(1)).setHireStatus(idCaptor.capture(), statusCaptor.capture());
+
+        assertNotNull(idCaptor.getValue(), "An ID is generated");
+        assertEquals(status, statusCaptor.getValue(), "The data is saved");
+
+        assertNotNull(response, "A response is returned");
+        assertEquals(idCaptor.getValue(), response.getFreelancerId(), "The response id should match");
+        assertEquals(status, response.getStatus(), "The response data should match");
+    }
+
+    @Test
+    void getHireStatusTest() {
+        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+
+        // GIVEN
+        String id = "fakeid";
+        String status = "hired";
+        HireStatusRecord record = new HireStatusRecord();
+        record.setFreelancerId(id);
+        record.setStatus(status);
+
+
+        when(hireDao.getHireStatus(id)).thenReturn(List.of(record));
+
+        // WHEN
+        HireStatus response = this.hireService.getHireStatus(id);
+
+        // THEN
+        verify(hireDao, times(1)).getHireStatus(idCaptor.capture());
+
+        assertEquals(id, idCaptor.getValue(), "The correct id is used");
+
+        assertNotNull(response, "A response is returned");
+        assertEquals(id, response.getFreelancerId(), "The response id should match");
+        assertEquals(status, response.getStatus(), "The response data should match");
+    }
 }

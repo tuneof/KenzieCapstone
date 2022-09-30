@@ -4,6 +4,7 @@ import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
+import com.kenzie.capstone.service.model.HireStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -193,7 +194,7 @@ public class FreelancerServiceTest {
     }
 
     @Test
-    void deleteFreelancer_freelancerExistsToDelete(){
+    void deleteFreelancer_freelancerExistsToDelete() {
         String id = randomUUID().toString();
         String contact = "911";
         List<String> expertise = new ArrayList<>(List.of("break", "idk"));
@@ -209,11 +210,33 @@ public class FreelancerServiceTest {
     }
 
     @Test
-    void deleteFreelancer_freelancerDoesNotExist(){
+    void deleteFreelancer_freelancerDoesNotExist() {
         String id = randomUUID().toString();
 
         freelancerService.deleteFreelancer(id);
 
         verify(freelancerRepository).deleteById(id);
     }
+
+    @Test
+    void getFreelancerHireStatus() {
+        String freelancerId = randomUUID().toString();
+        HireStatus hireStatus = new HireStatus(freelancerId, randomUUID().toString(), "hired");
+        when(hireServiceClient.getHireStatus(freelancerId)).thenReturn(hireStatus);
+
+        String status = freelancerService.getFreelancerHireStatus(freelancerId);
+
+        Assertions.assertEquals("hired", status, "Status was correct");
+    }
+
+    @Test
+    void setFreelancerHireStatus() {
+        String status = "hired";
+        HireStatus beforeStatus = new HireStatus("1", "1", "nothired");
+
+        freelancerService.setFreelancerHireStatus(status);
+
+        verify(hireServiceClient).setHireStatus(status);
+    }
+
 }
