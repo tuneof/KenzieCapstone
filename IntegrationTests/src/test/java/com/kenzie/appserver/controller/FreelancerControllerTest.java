@@ -112,32 +112,59 @@ class FreelancerControllerTest {
 
     @Test
     public void updateFreelancer_updateSuccess() throws Exception {
+        //GIVEN
         String id = randomUUID().toString();
         String contact = mockNeat.strings().valStr();
+        String updatedContact = mockNeat.strings().valStr();
         List<String> expertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
+        List<String> updatedExpertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
         String name = mockNeat.strings().valStr();
         String rate = mockNeat.strings().valStr();
+        String updatedRate = mockNeat.strings().valStr();
         String location = mockNeat.strings().valStr();
+        String updatedLocation = mockNeat.strings().valStr();
+
+        FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
+        createRequest.setName(name);
+        createRequest.setExpertise(expertise);
+        createRequest.setRate(rate);
+        createRequest.setLocation(location);
+        createRequest.setContact(contact);
 
         FreelancerUpdateRequest updateRequest = new FreelancerUpdateRequest();
         updateRequest.setId(id);
         updateRequest.setName(name);
-        updateRequest.setExpertise(expertise);
-        updateRequest.setRate(rate);
-        updateRequest.setLocation(location);
-        updateRequest.setContact(contact);
+        updateRequest.setExpertise(updatedExpertise);
+        updateRequest.setRate(updatedRate);
+        updateRequest.setLocation(updatedLocation);
+        updateRequest.setContact(updatedContact);
 
         mapper.registerModule(new JavaTimeModule());
 
         mvc.perform(post("/freelancers")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(updateRequest)))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(jsonPath("id")
+                        .exists())
+                .andExpect(jsonPath("name")
+                        .value(is(name)))
+                .andExpect(status().isOk());
+
+        //WHEN THEN
+        mvc.perform(put("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateRequest)))
                 .andExpect(jsonPath("id")
                         .exists())
                 .andExpect(jsonPath("name")
                         .value(is(name)))
                 .andExpect(status().is2xxSuccessful());
+
+        mvc.perform(delete("/freelancers/delete/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test

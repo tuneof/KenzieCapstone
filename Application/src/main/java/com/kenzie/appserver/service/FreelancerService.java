@@ -71,8 +71,13 @@ public class FreelancerService {
         HireStatus hireStatus = hireStatusServiceClient.setHireStatus(status);
     }
 
-    public void updateFreelancer(Freelancer freelancer) {
+    public Freelancer updateFreelancer(Freelancer freelancer) {
+        //if the freelancer that is being updated doesn't exist, returns null value
+        if (freelancerRepository.findById(freelancer.getId()).isEmpty()) {
+            throw new IllegalArgumentException("This freelancer does not exist.");
+        }
         freelancerRepository.save(toRecord(freelancer));
+        return freelancer;
     }
 
     private FreelancerRecord toRecord(Freelancer freelancer) {

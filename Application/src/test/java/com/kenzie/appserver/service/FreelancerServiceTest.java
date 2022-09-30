@@ -193,6 +193,25 @@ public class FreelancerServiceTest {
     }
 
     @Test
+    void updateFreelancer_doesNotExist_fail() {
+        //GIVEN
+        String id = randomUUID().toString();
+        String contact = "911";
+        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.empty());
+
+        //WHEN
+        //THEN
+        Assertions.assertThrows(IllegalArgumentException.class, () -> freelancerService.updateFreelancer(expectedFreelancer));
+    }
+
+    @Test
     void deleteFreelancer_freelancerExistsToDelete(){
         String id = randomUUID().toString();
         String contact = "911";
