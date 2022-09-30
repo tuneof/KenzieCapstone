@@ -164,11 +164,11 @@ class FreelancerControllerTest {
         freelancerCreateRequest.setLocation(location);
 
         FreelancerCreateRequest freelancerCreateRequest1 = new FreelancerCreateRequest();
-        freelancerCreateRequest.setName(name1);
-        freelancerCreateRequest.setContact(contact1);
-        freelancerCreateRequest.setExpertise(expertise1);
-        freelancerCreateRequest.setRate(rate1);
-        freelancerCreateRequest.setLocation(location1);
+        freelancerCreateRequest1.setName(name1);
+        freelancerCreateRequest1.setContact(contact1);
+        freelancerCreateRequest1.setExpertise(expertise1);
+        freelancerCreateRequest1.setRate(rate1);
+        freelancerCreateRequest1.setLocation(location1);
 
         mapper.registerModule(new JavaTimeModule());
 
@@ -176,22 +176,22 @@ class FreelancerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(freelancerCreateRequest)))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isOk());
 
         mvc.perform(post("/freelancers")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(freelancerCreateRequest1)))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().isOk());
 
         ResultActions actions = mvc.perform(get("/freelancers")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         String responseBody = actions.andReturn().getResponse().getContentAsString();
-        List<Freelancer> responses = mapper.readValue(responseBody, new TypeReference<List<Freelancer>>() {});
+        List<FreelancerResponse> responses = mapper.readValue(responseBody, new TypeReference<List<FreelancerResponse>>() {});
         Assertions.assertThat(responses.size()).isGreaterThan(0).as("There are responses");
-        for (Freelancer response : responses) {
+        for (FreelancerResponse response : responses) {
             Assertions.assertThat(response.getId()).isNotEmpty().as("The ID is populated");
             Assertions.assertThat(response.getName()).isNotEmpty().as("The name is populated");
             Assertions.assertThat(response.getLocation()).isNotEmpty().as("The location is populated");
