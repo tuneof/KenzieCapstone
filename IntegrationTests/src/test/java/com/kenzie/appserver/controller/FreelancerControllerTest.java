@@ -232,27 +232,56 @@ class FreelancerControllerTest {
     public void deleteFreelancer_deleteSuccess() throws Exception {
         String id = randomUUID().toString();
         String contact = mockNeat.strings().valStr();
+        String updatedContact = mockNeat.strings().valStr();
         List<String> expertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
+        List<String> updatedExpertise = new ArrayList<>(List.of(mockNeat.strings().valStr(), mockNeat.strings().valStr()));
         String name = mockNeat.strings().valStr();
         String rate = mockNeat.strings().valStr();
+        String updatedRate = mockNeat.strings().valStr();
         String location = mockNeat.strings().valStr();
+        String updatedLocation = mockNeat.strings().valStr();
 
-        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+        FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
+        createRequest.setName(name);
+        createRequest.setExpertise(expertise);
+        createRequest.setRate(rate);
+        createRequest.setLocation(location);
+        createRequest.setContact(contact);
 
-        freelancerService.deleteFreelancer(id);
+        FreelancerUpdateRequest updateRequest = new FreelancerUpdateRequest();
+        updateRequest.setId(id);
+        updateRequest.setName(name);
+        updateRequest.setExpertise(updatedExpertise);
+        updateRequest.setRate(updatedRate);
+        updateRequest.setLocation(updatedLocation);
+        updateRequest.setContact(updatedContact);
 
-        mvc.perform(delete("/delete/{id}"))
-                .andExpect(jsonPath("id").exists())
+        mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(jsonPath("id")
+                        .exists())
+                .andExpect(jsonPath("name")
+                        .value(is(name)))
+                .andExpect(status().isOk());
+
+        mvc.perform(put("/freelancers/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateRequest)))
                 .andExpect(status().is2xxSuccessful());
+
+        mvc.perform(delete("/freelancers/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful());
+        Assertions.assertThat(freelancerService.findById(id)).isNull();
     }
 
     @Test
     public void deleteFreelancer_deleteFail() throws Exception {
-        String id = randomUUID().toString();
-
-        freelancerService.deleteFreelancer(id);
-
-        mvc.perform(delete("/delete/{id}"))
+        mvc.perform(delete("/freelancers/{id}", randomUUID().toString())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 }
