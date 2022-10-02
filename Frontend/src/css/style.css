@@ -1,6 +1,6 @@
 :root {
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-    --primary-color: #131921;
+    --primary-color: #4267B2;
     --secondary-color: #fff;
     --error-color: rgba(194, 0, 0, 0.71);
 }
@@ -76,7 +76,7 @@
     flex-direction: column;
 }
 
-#concert-list li {
+#freelancer-list li {
     margin-bottom: 1rem;
 }
 
@@ -87,3 +87,4 @@
 .state.active {
     display: block;
 }
+

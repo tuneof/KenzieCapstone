@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.kenzie.appserver.repositories.converter.ZonedDateTimeConverter;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "OccuPost")
@@ -16,7 +15,7 @@ public class FreelancerRecord {
     private ZonedDateTime modifiedAt;
     private String id;
     private String name;
-    private List<String> expertise;
+    private String expertise;
     private String rate;
     private String location;
     private String contact;
@@ -60,11 +59,11 @@ public class FreelancerRecord {
     }
 
     @DynamoDBAttribute(attributeName = "expertise")
-    public List<String> getExpertise() {
+    public String getExpertise() {
         return expertise;
     }
 
-    public void setExpertise(List<String> expertise) {
+    public void setExpertise(String expertise) {
         this.expertise = expertise;
     }
 
