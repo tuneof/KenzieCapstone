@@ -1,11 +1,11 @@
 import BaseClass from "../util/baseClass";
 import axios from 'axios'
 
-export default class ExampleClient extends BaseClass {
+export default class FreelancerClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getFreelancerById', 'getAllFreelancers', 'createFreelancer', 'updateFreelancer'];
+        const methodsToBind = ['clientLoaded', 'getAllFreelancers', 'addNewFreelancer', 'deleteFreelancer'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -22,63 +22,69 @@ export default class ExampleClient extends BaseClass {
         }
     }
 
-    /**
-     * Gets the freelancer for the given ID.
-     * @param id Unique identifier for a concert
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The concert
-     */
-    async getFreelancerById(id, errorCallback) {
-        try {
-            const response = await this.client.get(`/freelancer/${id}`);
-            return response.data;
-        } catch (error) {
-            this.handleError("getFreelancerById", error, errorCallback)
-        }
-    }
-
     async getAllFreelancers(errorCallback) {
         try {
-            const response = await this.client.get(`/freelancer`);
+            const response = await this.client.get(`/freelancers/all`);
             return response.data;
         } catch (error) {
             this.handleError("getAllFreelancers", error, errorCallback)
         }
     }
 
-    async createFreelancer(name, expertise, rate, location, contact, errorCallback) {
+    /**
+     * Gets the freelancer for the given ID.
+     * @param id Unique identifier for a concert
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The concert
+     */
+    async findFreelancerById(id, errorCallback) {
         try {
-            const response = await this.client.post(`/freelancer`, {
-                "name": name,
-                "expertise": expertise,
-                "rate": rate,
-                "location": location
-                "contact": contact
+            const response = await this.client.get(`/freelancers/${id}`);
+            return response.data;
+        } catch (error) {
+            this.handleError("findFreelancerById", error, errorCallback)
+        }
+    }
+
+    async updateFreelancer(request, errorCallback) {
+        try {
+            const response = await this.client.put(`/freelancers`, {
+                id: request.id,
+                name: request.name,
+                expertise: request.expertise,
+                rate: request.rate,
+                location: request.location,
+                contact: request.contact
             });
             return response.data;
         } catch (error) {
-            this.handleError("createFreelancer", error, errorCallback);
+            this.handleError("updateFreelancer", error, errorCallback)
         }
     }
 
-    async updateFreelancer(id, errorCallback) {
+    async addNewFreelancer(request, errorCallback) {
         try {
-            const response = await this.client.put(`/freelancer/${id}`);
+            const response = await this.client.post(`/freelancers`, {
+                name: request.name,
+                expertise: request.expertise,
+                rate: request.rate,
+                location: request.location,
+                contact: request.contact
+            });
             return response.data;
         } catch (error) {
-            this.handleError("getFreelancerById", error, errorCallback)
+            this.handleError("addNewFreelancer", error, errorCallback);
         }
     }
 
-    async deleteFreelancerById(id, errorCallback) {
+    async deleteFreelancer(id, errorCallback) {
         try {
-            const response = await this.client.delete(`/freelancer/${id}`);
-            return response.data;
+            const response = await this.client.delete(`/freelancers/delete/${id}`);
+            return true;
         } catch (error) {
-            this.handleError("deleteFreelancerById", error, errorCallback)
+            this.handleError("deleteFreelancer", error, errorCallback)
         }
     }
-
     /**
      * Helper method to log the error and run any error functions.
      * @param error The error received from the server.

@@ -14,7 +14,7 @@ public class FreelancerResponse {
     private String name;
 
     @JsonProperty("expertise")
-    private List<String> expertise;
+    private String expertise;
 
     @JsonProperty("rate")
     private String rate;
@@ -41,11 +41,11 @@ public class FreelancerResponse {
         this.name = name;
     }
 
-    public List<String> getExpertise() {
+    public String getExpertise() {
         return expertise;
     }
 
-    public void setExpertise(List<String> expertise) {
+    public void setExpertise(String expertise) {
         this.expertise = expertise;
     }
 

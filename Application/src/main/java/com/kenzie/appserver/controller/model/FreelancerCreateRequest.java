@@ -12,7 +12,7 @@ public class FreelancerCreateRequest {
 
     @NotEmpty
     @JsonProperty("expertise")
-    private List<String> expertise;
+    private String expertise;
 
     @NotEmpty
     @JsonProperty("rate")
@@ -34,11 +34,11 @@ public class FreelancerCreateRequest {
         this.name = name;
     }
 
-    public List<String> getExpertise() {
+    public String getExpertise() {
         return expertise;
     }
 
-    public void setExpertise(List<String> expertise) {
+    public void setExpertise(String expertise) {
         this.expertise = expertise;
     }
 
