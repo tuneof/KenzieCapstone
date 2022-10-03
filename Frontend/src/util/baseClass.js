@@ -20,6 +20,33 @@ export default class BaseClass {
         return formatter.format(amount);
     }
 
+    /**
+     * Creates a div containing all elements to display book details.
+     * @param book element from the datastore, which details are taken from.
+     */
+    createFreelancerDiv(freelancer) {
+        let result = document.getElementById("freelancer-container");
+
+        while (result.firstChild) {
+            result.removeChild(result.firstChild);
+        }
+
+        const freelancerDiv = document.createElement('div');
+        const name = document.createElement('h3');
+        title.innerText = freelancer.name;
+
+        freelancerDiv.appendChild(name);
+        freelancerDiv.appendChild(document.createTextNode(`Expertise: ${freelancer.expertise}`));
+        freelancerDiv.appendChild(document.createElement('br'));
+        freelancerDiv.appendChild(document.createTextNode(`Hourly rate: ${freelancer.rate}`));
+        freelancerDiv.appendChild(document.createElement('br'));
+        freelancerDiv.appendChild(document.createTextNode(`Location: ${freelancer.location}`));
+        freelancerDiv.appendChild(document.createElement('br'));
+        freelancerDiv.appendChild(document.createTextNode(`Contact: ${freelancer.contact}`));
+
+        result.appendChild(freelancerDiv);
+    }
+
     showMessage(message) {
         Toastify({
             text: message,

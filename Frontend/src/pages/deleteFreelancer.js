@@ -1,6 +1,6 @@
 import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
-import FreelancerClient from "../api/freelancerClient";
+import HomeClient from "../api/homeClient";
 
 class DeleteFreelancer extends BaseClass {
 
