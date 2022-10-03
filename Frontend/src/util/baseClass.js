@@ -21,7 +21,7 @@ export default class BaseClass {
     }
 
     /**
-     * Creates a div containing all elements to display book details.
+     * Creates a div containing all elements to display freelancer details.
      * @param book element from the datastore, which details are taken from.
      */
     createFreelancerDiv(freelancer) {
@@ -32,10 +32,10 @@ export default class BaseClass {
         }
 
         const freelancerDiv = document.createElement('div');
-        const name = document.createElement('h3');
+        const title = document.createElement('h3');
         title.innerText = freelancer.name;
 
-        freelancerDiv.appendChild(name);
+        freelancerDiv.appendChild(title);
         freelancerDiv.appendChild(document.createTextNode(`Expertise: ${freelancer.expertise}`));
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createTextNode(`Hourly rate: ${freelancer.rate}`));
@@ -43,7 +43,8 @@ export default class BaseClass {
         freelancerDiv.appendChild(document.createTextNode(`Location: ${freelancer.location}`));
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createTextNode(`Contact: ${freelancer.contact}`));
-
+        freelancerDiv.appendChild(document.createElement('br'));
+        freelancerDiv.appendChild(document.createElement('br'));
         result.appendChild(freelancerDiv);
     }
 
