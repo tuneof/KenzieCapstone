@@ -1,6 +1,6 @@
 import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
-import FreelancerClient from "../api/freelancerClient";
+import HomeClient from "../api/homeClient";
 
 class AddFreelancer extends BaseClass {
 
@@ -12,7 +12,7 @@ class AddFreelancer extends BaseClass {
 
     async mount() {
         document.getElementById('add-new-freelancer-form').addEventListener('submit', this.onAdd);
-        this.client = new FreelancerClient();
+        this.client = new HomeClient();
 
         this.dataStore.addChangeListener(this.renderFreelancerDetails);
     }

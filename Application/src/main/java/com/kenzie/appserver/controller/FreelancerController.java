@@ -92,7 +92,7 @@ public class FreelancerController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
         if (freelancerService.findById(id) == null) {
             return ResponseEntity.badRequest().body("Id does not exist");

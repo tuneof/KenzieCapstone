@@ -38,7 +38,6 @@ public class FreelancerService {
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
         freelancerRecord.setCreatedAt(ZonedDateTime.now());
-        freelancerRecord.setModifiedAt(ZonedDateTime.now());
         freelancerRecord.setContact(freelancer.getContact());
         freelancerRecord.setExpertise(freelancer.getExpertise());
         freelancerRecord.setName(freelancer.getName());
@@ -83,7 +82,6 @@ public class FreelancerService {
     private FreelancerRecord toRecord(Freelancer freelancer) {
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
-        freelancerRecord.setCreatedAt(ZonedDateTime.now());
         freelancerRecord.setModifiedAt(ZonedDateTime.now());
         freelancerRecord.setContact(freelancer.getContact());
         freelancerRecord.setExpertise(freelancer.getExpertise());

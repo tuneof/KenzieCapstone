@@ -1,7 +1,7 @@
 import BaseClass from "../util/baseClass";
 import axios from 'axios'
 
-export default class FreelancerClient extends BaseClass {
+export default class HomeClient extends BaseClass {
 
     constructor(props = {}){
         super();
