@@ -12,7 +12,7 @@ class DeleteFreelancer extends BaseClass {
 
     async mount() {
         document.getElementById('delete-freelancer-form').addEventListener('submit', this.onDelete);
-        this.client = new FreelancerClient();
+        this.client = new HomeClient();
 
 //        this.dataStore.addChangeListener(this.renderFreelancer)
     }
