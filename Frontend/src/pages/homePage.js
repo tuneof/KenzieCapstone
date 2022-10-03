@@ -1,6 +1,6 @@
 import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
-import FreelancerClient from "../api/freelancerClient";
+import HomeClient from "../api/homeClient";
 
 /**
  * Logic needed for the view playlist page of the website.
@@ -18,7 +18,7 @@ class HomePage extends BaseClass {
      */
     async mount() {
         document.getElementById('get-all-freelancers-form').addEventListener('submit', this.onCreate);
-        this.client = new FreelancerClient();
+        this.client = new HomeClient();
         await this.onGetFreelancers();
 
         this.dataStore.addChangeListener(this.renderFreelancers)
