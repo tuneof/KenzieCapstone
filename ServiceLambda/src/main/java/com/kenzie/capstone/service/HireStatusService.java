@@ -1,6 +1,9 @@
 package com.kenzie.capstone.service;
 
 import com.kenzie.capstone.service.dao.HireStatusDao;
+import com.kenzie.capstone.service.exceptions.InvalidDataException;
+import com.kenzie.capstone.service.model.HireRequest;
+import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
 import com.kenzie.capstone.service.model.HireStatusRecord;
 
@@ -19,15 +22,34 @@ public class HireStatusService {
     public HireStatus getHireStatus(String freelancerId) {
         List<HireStatusRecord> records = hireStatusDao.getHireStatus(freelancerId);
         if (records.size() > 0) {
-            return new HireStatus(records.get(0).getFreelancerId(), records.get(0).getHireStatusId(), records.get(0).getStatus());
+            return new HireStatus(records.get(0).getFreelancerId(), records.get(0).getStatus());
         }
 
         return null;
     }
 
-    public HireStatus setHireStatus(String status) {
-        String id = UUID.randomUUID().toString();
-        HireStatusRecord record = hireStatusDao.setHireStatus(id, status);
-        return new HireStatus(id, id, status);
+    public HireResponse setHireStatus(HireRequest hireRequest) {
+        if (hireRequest == null) {
+            throw new InvalidDataException("Request must not be null");
+        }
+        HireStatusRecord record = new HireStatusRecord();
+        record.setFreelancerId(hireRequest.getFreelancerId());
+        record.setStatus(hireRequest.getStatus());
+        hireStatusDao.setHireStatus(record);
+
+        return new HireResponse(record.getFreelancerId(), record.getStatus());
+    }
+
+    public HireResponse updateHireStatus(HireRequest hireRequest) {
+        if (hireRequest == null) {
+            throw new InvalidDataException("Request must not be null");
+        }
+
+        HireStatusRecord record = new HireStatusRecord();
+        record.setFreelancerId(hireRequest.getFreelancerId());
+        record.setStatus(hireRequest.getStatus());
+        hireStatusDao.updateHireStatus(record);
+
+        return new HireResponse(record.getFreelancerId(), record.getStatus());
     }
 }

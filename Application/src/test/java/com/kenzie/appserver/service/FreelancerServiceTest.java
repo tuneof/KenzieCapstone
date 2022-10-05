@@ -221,22 +221,12 @@ public class FreelancerServiceTest {
     @Test
     void getFreelancerHireStatus() {
         String freelancerId = randomUUID().toString();
-        HireStatus hireStatus = new HireStatus(freelancerId, randomUUID().toString(), "hired");
+        HireStatus hireStatus = new HireStatus(freelancerId, "hired");
         when(hireServiceClient.getHireStatus(freelancerId)).thenReturn(hireStatus);
 
         String status = freelancerService.getFreelancerHireStatus(freelancerId);
 
         Assertions.assertEquals("hired", status, "Status was correct");
-    }
-
-    @Test
-    void setFreelancerHireStatus() {
-        String status = "hired";
-        HireStatus beforeStatus = new HireStatus("1", "1", "nothired");
-
-        freelancerService.setFreelancerHireStatus(status);
-
-        verify(hireServiceClient).setHireStatus(status);
     }
 
 }

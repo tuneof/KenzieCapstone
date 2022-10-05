@@ -4,6 +4,8 @@ import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
+import com.kenzie.capstone.service.model.HireRequest;
+import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,11 @@ public class FreelancerService {
         freelancerRecord.setLocation(freelancer.getLocation());
         freelancerRepository.save(freelancerRecord);
 
+        HireRequest hireRequest = new HireRequest();
+        hireRequest.setFreelancerId(freelancerRecord.getId());
+        hireRequest.setStatus("Not hired");
+        hireStatusServiceClient.setHireStatus(hireRequest);
+
         return freelancer;
     }
     
@@ -67,8 +74,11 @@ public class FreelancerService {
         return hireStatus.getStatus();
     }
 
-    public void setFreelancerHireStatus(String status) {
-        HireStatus hireStatus = hireStatusServiceClient.setHireStatus(status);
+    public HireStatus updateFreelancerHireStatus(String freelancerId, String status) {
+        HireStatus hireStatus = new HireStatus(freelancerId, status);
+        hireStatusServiceClient.updateHireStatus(hireStatus);
+
+        return hireStatus;
     }
 
     public void updateFreelancer(Freelancer freelancer) {
