@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.web.server.ResponseStatusException;
+import org.testcontainers.shaded.okhttp3.Response;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -208,7 +210,7 @@ public class FreelancerServiceTest {
 
         //WHEN
         //THEN
-        Assertions.assertThrows(IllegalArgumentException.class, () -> freelancerService.updateFreelancer(expectedFreelancer));
+        Assertions.assertThrows(ResponseStatusException.class, () -> freelancerService.updateFreelancer(expectedFreelancer));
     }
 
     @Test

@@ -5,11 +5,14 @@ import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
 import com.kenzie.capstone.service.model.HireStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FreelancerService {
@@ -70,13 +73,21 @@ public class FreelancerService {
         HireStatus hireStatus = hireStatusServiceClient.setHireStatus(status);
     }
 
-    public Freelancer updateFreelancer(Freelancer freelancer) {
+    public void updateFreelancer(Freelancer freelancer) {
         //if the freelancer that is being updated doesn't exist, returns null value
-        if (freelancerRepository.findById(freelancer.getId()).isEmpty()) {
-            throw new IllegalArgumentException("This freelancer does not exist.");
+        Optional<FreelancerRecord> optionalFreelancerRecord = freelancerRepository.findById(freelancer.getId());
+
+        if (!optionalFreelancerRecord.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Freelancer does not exist.");
         }
+
+        FreelancerRecord record = optionalFreelancerRecord.get();
+
+        if (!record.getName().equals(freelancer.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only the person who created this profile may update it.");
+        }
+        //return freelancer;
         freelancerRepository.save(toRecord(freelancer));
-        return freelancer;
     }
 
     private FreelancerRecord toRecord(Freelancer freelancer) {

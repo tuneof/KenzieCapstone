@@ -5,55 +5,54 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <meta charset="UTF-8">
-    <title>Update</title>
+    <title>Add</title>
 </head>
 <body class="background">
-    <header class="header" id="header">
-        <div class="site-title">
-            <a class="header_home" href="index.html">OccuPost - Post and Get  Occupied</a>
-            <ul class="navigation">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="addFreelancer.html">Add</a></li>
-                <li><a href="getFreelancer.html">Details</a></li>
-                <li><a href="deleteFreelancer.html">Delete</a></li>
-                <li><a href="updateFreelancer.html">Update</a></li>
-            </ul>
-        </div>
-    </header>
+<header class="header" id="header">
+    <div class="site-title">
+        <a class="header_home" href="index.html">OccuPost - Post and Get  Occupied</a>
+        <ul class="navigation">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="addFreelancer.html">Add</a></li>
+            <li><a href="getFreelancer.html">Details</a></li>
+            <li><a href="deleteFreelancer.html">Delete</a></li>
+            <li><a href="updateFreelancer.html">Update</a></li>
+        </ul>
+    </div>
+</header>
+<div class="card">
+    <h2 id="freelancer-details-header">Update Freelancer</h2>
+    <form class="card-content" id="update-freelancer-details-form">
+        <p class="form-field">
+            <input type="text" required class="validated-field" id="update-freelancer-details-id" placeholder="Enter ID">
+        </p>
+        <p class="form-field">
+            <input type="text" required class="validated-field" id="update-freelancer-details-name" placeholder="Name...">
+        </p>
+        <p class="form-field">
+            <input type="text" class="validated-field" id="update-freelancer-details-expertise" placeholder="Expertise...">
+        </p>
+        <p class="form-field">
+            <input type="text" class="validated-field" id="update-freelancer-details-rate" placeholder="Rate...">
+        </p>
+        <p class="form-field">
+            <input type="text" class="validated-field" id="update-freelancer-details-location" placeholder="Location...">
+        </p>
+        <p class="form-field">
+            <input type="text" class="validated-field" id="update-freelancer-details-contact" placeholder="Contact...">
+        </p>
+        <button id="submit" type="submit">Submit</button>
+    </form>
+</div>
+<div class="container" id="container">
+    <div class="modal">
+        <div class="freelancer-container" id="freelancer-container"></div>
+        <button id="close">Close</button>
+    </div>
+</div>
 
-    <div class="card">
-        <h2>Update Freelancer</h2>
-        <h3>Please fill out the information below to update your current information:</h3>
-        <form class="card-content" id="update-freelancer-form">
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-id" placeholder="Enter ID of freelancer...">
-            </p>
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-name" placeholder="Enter name of freelancer...">
-            </p>
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-expertise" placeholder="Enter expertise...">
-            </p>
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-rate" placeholder="Enter rate...">
-            </p>
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-location" placeholder="Enter location...">
-            </p>
-            <p class="form-field">
-                <input type="text" required class="validated-field" id="freelancer-contact" placeholder="Enter contact information...">
-            </p>
-            <button type="submit" id="update-freelancer-button">Submit Update</button>
-        </form>
-    </div>
-    <div class="container" id="container">
-        <div class="modal">
-            <div class="freelancer-container" id="freelancer-container"></div>
-            <button id="close">Close</button>
-        </div>
-    </div>
-    <script type="text/javascript" src="updateFreelancer.js"></script>
-    <script>
+<script type="text/javascript" src="updateFreelancer.js"></script>
+<script>
         const container = document.getElementById('container');
         const close = document.getElementById('close');
 
