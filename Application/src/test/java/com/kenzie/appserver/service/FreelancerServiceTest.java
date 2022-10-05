@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
@@ -24,19 +25,21 @@ public class FreelancerServiceTest {
     private FreelancerRepository freelancerRepository;
     private FreelancerService freelancerService;
     private HireStatusServiceClient hireServiceClient;
+    private CacheStore cacheStore;
 
     @BeforeEach
     void setup() {
         freelancerRepository = mock(FreelancerRepository.class);
         hireServiceClient = mock(HireStatusServiceClient.class);
-        freelancerService = new FreelancerService(freelancerRepository, hireServiceClient);
+        cacheStore = mock(CacheStore.class);
+        freelancerService = new FreelancerService(freelancerRepository, hireServiceClient, cacheStore);
     }
     /** ------------------------------------------------------------------------
      *  FreelancerService.findById
      *  ------------------------------------------------------------------------ **/
 
     @Test
-    void findById() {
+    void findById_Success() {
         // GIVEN
         String id = randomUUID().toString();
 
@@ -52,6 +55,52 @@ public class FreelancerServiceTest {
         Assertions.assertNotNull(freelancer, "The object is returned");
         Assertions.assertEquals(record.getId(), freelancer.getId(), "The id matches");
         Assertions.assertEquals(record.getName(), freelancer.getName(), "The name matches");
+    }
+
+    @Test
+    void findById_null_throwsException() {
+        String id = randomUUID().toString();
+
+        FreelancerRecord record = new FreelancerRecord();
+        record.setId(id);
+        record.setName("Some name");
+        record.setExpertise("Master");
+        record.setRate("$45");
+        record.setLocation("Washington DC");
+        record.setContact("info@info.com");
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.of(record));
+
+        // WHEN
+        Freelancer freelancer = freelancerService.findById(id);
+
+        // THEN
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            freelancerService.findById(null);
+        });
+    }
+
+    @Test
+    void findById_empty_throwsException() {
+        String id = randomUUID().toString();
+
+        FreelancerRecord record = new FreelancerRecord();
+        record.setId(id);
+        record.setName("Some name");
+        record.setExpertise("Master");
+        record.setRate("$45");
+        record.setLocation("Washington DC");
+        record.setContact("info@info.com");
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.of(record));
+
+        // WHEN
+        Freelancer freelancer = freelancerService.findById(id);
+
+        // THEN
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            freelancerService.findById("");
+        });
     }
 
     @Test

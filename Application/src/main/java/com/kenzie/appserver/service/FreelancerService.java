@@ -1,5 +1,6 @@
 package com.kenzie.appserver.service;
 
+import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
@@ -20,14 +21,17 @@ import java.util.Optional;
 public class FreelancerService {
     private FreelancerRepository freelancerRepository;
     private HireStatusServiceClient hireStatusServiceClient;
+    private CacheStore cache;
 
-    public FreelancerService(FreelancerRepository repository, HireStatusServiceClient client){
+    public FreelancerService(FreelancerRepository repository, HireStatusServiceClient client, CacheStore cache){
         this.freelancerRepository = repository;
         this.hireStatusServiceClient = client;
+        this.cache = cache;
     }
 
     public List<Freelancer> findAll() {
         List<Freelancer> freelancers = new ArrayList<>();
+
         freelancerRepository
                 .findAll()
                 .forEach(freelancer -> freelancers.add(toFreelancer(freelancer)));
@@ -55,10 +59,20 @@ public class FreelancerService {
         hireRequest.setStatus("Not hired");
         hireStatusServiceClient.setHireStatus(hireRequest);
 
+        cache.add(freelancer.getId(), freelancer);
+
         return freelancer;
     }
     
     public Freelancer findById(String id) {
+
+        Freelancer cachedFreelancer = cache.get(id);
+
+        if (cachedFreelancer != null) {
+            return cachedFreelancer;
+
+        }
+
         return freelancerRepository
                 .findById(id)
                 .map(freelancer -> new Freelancer(freelancer.getId(),
@@ -87,7 +101,7 @@ public class FreelancerService {
         //if the freelancer that is being updated doesn't exist, returns null value
         Optional<FreelancerRecord> optionalFreelancerRecord = freelancerRepository.findById(freelancer.getId());
 
-        if (!optionalFreelancerRecord.isPresent()) {
+        if (optionalFreelancerRecord.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Freelancer does not exist.");
         }
 
@@ -98,6 +112,8 @@ public class FreelancerService {
         }
         //return freelancer;
         freelancerRepository.save(toRecord(freelancer));
+        cache.evict(freelancer.getId());
+        cache.add(freelancerRepository.findById(freelancer.getId()).get().getId(), toFreelancer(freelancerRepository.findById(freelancer.getId()).get()));
     }
 
     private FreelancerRecord toRecord(Freelancer freelancer) {
