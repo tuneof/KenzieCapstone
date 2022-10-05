@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.web.server.ResponseStatusException;
+import org.testcontainers.shaded.okhttp3.Response;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class FreelancerServiceTest {
         record1.setContact("contact1");
         record1.setCreatedAt(ZonedDateTime.now());
         record1.setId(randomUUID().toString());
-        record1.setExpertise(new ArrayList<>(List.of("fix", "idk")));
+        record1.setExpertise("Full Stack Developer");
         record1.setLocation("NYC");
         record1.setName("Bob");
         record1.setModifiedAt(ZonedDateTime.now());
@@ -81,7 +83,7 @@ public class FreelancerServiceTest {
         record2.setContact("contact2");
         record2.setCreatedAt(ZonedDateTime.now());
         record2.setId(randomUUID().toString());
-        record2.setExpertise(new ArrayList<>(List.of("break", "idk")));
+        record2.setExpertise("Java Backend");
         record2.setLocation("Queens");
         record2.setName("Tom");
         record2.setModifiedAt(ZonedDateTime.now());
@@ -123,7 +125,7 @@ public class FreelancerServiceTest {
     void addNewFreelancer() {
         String id = randomUUID().toString();
         String contact = "911";
-        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String expertise = "Python";
         String name = "Fred";
         String rate = "$10";
         String location = "New York";
@@ -162,7 +164,7 @@ public class FreelancerServiceTest {
         //GIVEN
         String id = randomUUID().toString();
         String contact = "911";
-        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String expertise = "Fixer";
         String name = "Fred";
         String rate = "$10";
         String location = "New York";
@@ -194,10 +196,29 @@ public class FreelancerServiceTest {
     }
 
     @Test
-    void deleteFreelancer_freelancerExistsToDelete() {
+    void updateFreelancer_doesNotExist_fail() {
+        //GIVEN
         String id = randomUUID().toString();
         String contact = "911";
-        List<String> expertise = new ArrayList<>(List.of("break", "idk"));
+        String expertise = "CSS Master";
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.empty());
+
+        //WHEN
+        //THEN
+        Assertions.assertThrows(ResponseStatusException.class, () -> freelancerService.updateFreelancer(expectedFreelancer));
+    }
+
+    @Test
+    void deleteFreelancer_freelancerExistsToDelete(){
+        String id = randomUUID().toString();
+        String contact = "911";
+        String expertise = "Tea Maker";
         String name = "Fred";
         String rate = "$10";
         String location = "New York";

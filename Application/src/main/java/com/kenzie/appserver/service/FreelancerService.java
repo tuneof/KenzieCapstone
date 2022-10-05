@@ -7,11 +7,14 @@ import com.kenzie.capstone.service.client.HireStatusServiceClient;
 import com.kenzie.capstone.service.model.HireRequest;
 import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FreelancerService {
@@ -40,7 +43,6 @@ public class FreelancerService {
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
         freelancerRecord.setCreatedAt(ZonedDateTime.now());
-        freelancerRecord.setModifiedAt(ZonedDateTime.now());
         freelancerRecord.setContact(freelancer.getContact());
         freelancerRecord.setExpertise(freelancer.getExpertise());
         freelancerRecord.setName(freelancer.getName());
@@ -82,13 +84,25 @@ public class FreelancerService {
     }
 
     public void updateFreelancer(Freelancer freelancer) {
+        //if the freelancer that is being updated doesn't exist, returns null value
+        Optional<FreelancerRecord> optionalFreelancerRecord = freelancerRepository.findById(freelancer.getId());
+
+        if (!optionalFreelancerRecord.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Freelancer does not exist.");
+        }
+
+        FreelancerRecord record = optionalFreelancerRecord.get();
+
+        if (!record.getName().equals(freelancer.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only the person who created this profile may update it.");
+        }
+        //return freelancer;
         freelancerRepository.save(toRecord(freelancer));
     }
 
     private FreelancerRecord toRecord(Freelancer freelancer) {
         FreelancerRecord freelancerRecord = new FreelancerRecord();
         freelancerRecord.setId(freelancer.getId());
-        freelancerRecord.setCreatedAt(ZonedDateTime.now());
         freelancerRecord.setModifiedAt(ZonedDateTime.now());
         freelancerRecord.setContact(freelancer.getContact());
         freelancerRecord.setExpertise(freelancer.getExpertise());

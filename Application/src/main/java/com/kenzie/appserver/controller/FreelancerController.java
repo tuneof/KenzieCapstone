@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,12 @@ public class FreelancerController {
 
     @PostMapping
     public ResponseEntity<FreelancerResponse> createFreelancer(@RequestBody FreelancerCreateRequest request) {
-        Freelancer freelancer = new Freelancer(randomUUID().toString(), request.getName(), request.getExpertise(),
-                request.getRate(), request.getLocation(), request.getContact());
+        Freelancer freelancer = new Freelancer(randomUUID().toString(),
+                request.getName(),
+                request.getExpertise(),
+                request.getRate(),
+                request.getLocation(),
+                request.getContact());
 
         try {
             freelancerService.addNewFreelancer(freelancer);
@@ -37,17 +42,17 @@ public class FreelancerController {
 
         FreelancerResponse response = freelancerToResponse(freelancer);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(URI.create("/freelancers/" + response.getId())).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<FreelancerResponse> getFreelancerById(@PathVariable("id") String id) {
         Freelancer freelancer = freelancerService.findById(id);
         FreelancerResponse freelancerResponse = freelancerToResponse(freelancer);
         return ResponseEntity.ok(freelancerResponse);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<FreelancerResponse>> getAllFreelancers() {
         List<Freelancer> freelancers = freelancerService.findAll();
 
@@ -63,7 +68,7 @@ public class FreelancerController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<FreelancerResponse> updateFreelancer(@RequestBody FreelancerUpdateRequest request) {
         //if the freelancer that is being updated doesn't exist, returns 204
         if (freelancerService.findById(request.getId()) == null) {
@@ -84,13 +89,13 @@ public class FreelancerController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteFreelancerById(@PathVariable("id") String id) {
         if (freelancerService.findById(id) == null) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.badRequest().body("Id does not exist");
         }
         freelancerService.deleteFreelancer(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/hirestatus")

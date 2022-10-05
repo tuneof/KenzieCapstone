@@ -1,40 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script type="text/javascript" src="examplePage.js"></script>
+    <script type="text/javascript" src="homePage.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title>Freelancers</title>
 </head>
 <body class="background">
-    <header class="header" id="header">
-        <div class="site-title">
-            <a class="header_home" href="index.html">Example App</a>
-        </div>
-    </header>
-    <div class="card">
-        <h2>Create Example</h2>
-        <form class="card-content" id="create-form">
-            <p class="form-field">
-                <label>Name</label>
-                <input type="text" required class="validated-field" id="create-name-field">
-            </p>
-            <button type="submit">Create</button>
-        </form>
+<header class="header" id="header">
+    <div class="site-title">
+        <a class="header_home" href="index.html">OccuPost - Post and Get  Occupied</a>
+        <ul class="navigation">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="addFreelancer.html">Add</a></li>
+            <li><a href="getFreelancer.html">Details</a></li>
+            <li><a href="deleteFreelancer.html">Delete</a></li>
+            <li><a href="updateFreelancer.html">Update</a></li>
+        </ul>
     </div>
-    <div class="card">
-        <h2>Get By ID</h2>
-        <form class="card-content" id="get-by-id-form">
-            <p class="form-field">
-                <label>ID</label>
-                <input type="text" required class="validated-field" id="id-field">
-            </p>
-            <button type="submit">Get</button>
-        </form>
-    </div>
-    <div class="card" id="result">
-        <h2>Result:</h2>
-        <p id="result-info"></p>
-    </div>
-
+</header>
+<div class="card">
+    <h1>Welcome to a Free Platform for Freelancers!</h1>
+    <h3>View the List of All Freelancers by clicking the button below.</h3>
+</div>
+<div class="card">
+    <form class="card-content" id="get-all-freelancers-form">
+        <p>
+            <button type="submit">See Full List of Freelancers</button>
+        </p>
+    </form>
+</div>
+<div class="card" id="all-freelancers">
+    <h2>List of Freelancers:</h2>
+    <p id="all-freelancers-info"></p>
+</div>
 </body>
 </html>
