@@ -1,11 +1,15 @@
 package com.kenzie.capstone.service.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kenzie.capstone.service.model.HireRequest;
+import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
 
 public class HireStatusServiceClient {
-    private static final String GET_HIRESTATUS_ENDPOINT = "status/{id}";
-    private static final String SET_HIRESTATUS_ENDPOINT = "status";
+    private static final String GET_HIRESTATUS_ENDPOINT = "hirestatus/{id}";
+    private static final String SET_HIRESTATUS_ENDPOINT = "hirestatus/set";
+    private static final String UPDATE_HIRESTATUS_ENDPOINT = "hirestatus/{id}";
 
     private ObjectMapper mapper;
 
@@ -25,15 +29,40 @@ public class HireStatusServiceClient {
         return hireStatus;
     }
 
-    public HireStatus setHireStatus(String status) {
+    public HireResponse setHireStatus(HireRequest hireRequest) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        String response = endpointUtility.postEndpoint(SET_HIRESTATUS_ENDPOINT, status);
-        HireStatus hireStatus;
+        String request;
         try {
-            hireStatus = mapper.readValue(response, HireStatus.class);
+            request = mapper.writeValueAsString(hireRequest);
+        } catch(JsonProcessingException e) {
+            throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
+        }
+        String response = endpointUtility.postEndpoint(SET_HIRESTATUS_ENDPOINT, request);
+        HireResponse hireResponse;
+        try {
+            hireResponse = mapper.readValue(response, HireResponse.class);
         } catch (Exception e) {
             throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
         }
-        return hireStatus;
+        return hireResponse;
+    }
+
+    public HireResponse updateHireStatus(HireStatus hireStatus) {
+        EndpointUtility endpointUtility = new EndpointUtility();
+        HireRequest hireRequest = new HireRequest(hireStatus.getFreelancerId(), hireStatus.getStatus());
+        String updateRequest;
+        try {
+            updateRequest = mapper.writeValueAsString(hireRequest);
+        } catch(JsonProcessingException e) {
+            throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
+        }
+        String response = endpointUtility.postEndpoint(UPDATE_HIRESTATUS_ENDPOINT, updateRequest);
+        HireResponse hireResponse;
+        try {
+            hireResponse = mapper.readValue(response, HireResponse.class);
+        } catch (Exception e) {
+            throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
+        }
+        return hireResponse;
     }
 }

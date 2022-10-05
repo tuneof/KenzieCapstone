@@ -1,15 +1,16 @@
 package com.kenzie.capstone.service.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class HireStatus {
     private String freelancerId;
     private String hireStatusId;
     private String status;
 
-    public HireStatus(String freelancerId, String hireStatusId, String status) {
+    public HireStatus(String freelancerId, String status) {
         this.freelancerId = freelancerId;
-        this.hireStatusId = hireStatusId;
+        this.hireStatusId = UUID.randomUUID().toString();
         this.status = status;
     }
 
@@ -23,10 +24,6 @@ public class HireStatus {
 
     public String getHireStatusId() {
         return hireStatusId;
-    }
-
-    public void setHireStatusId(String hireStatusId) {
-        this.hireStatusId = hireStatusId;
     }
 
     public String getStatus() {

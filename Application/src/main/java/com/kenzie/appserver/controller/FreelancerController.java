@@ -1,9 +1,6 @@
 package com.kenzie.appserver.controller;
 
-import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
-import com.kenzie.appserver.controller.model.FreelancerResponse;
-import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
-import com.kenzie.appserver.controller.model.HireStatusResponse;
+import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.service.FreelancerService;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.model.HireStatus;
@@ -101,10 +98,18 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/status")
+    @GetMapping("/{id}/hirestatus")
     public ResponseEntity<HireStatusResponse> getHireStatus(@PathVariable("id") String id) {
         HireStatusResponse hireStatusResponse = new HireStatusResponse();
         hireStatusResponse.setStatus(freelancerService.getFreelancerHireStatus(id));
+        return ResponseEntity.ok(hireStatusResponse);
+    }
+
+    @PostMapping("/{id}/hirestatus")
+    public ResponseEntity<HireStatusResponse> updateHireStatus(@RequestBody HireStatusUpdateRequest request) {
+        HireStatusResponse hireStatusResponse = new HireStatusResponse();
+        freelancerService.updateFreelancerHireStatus(request.getId(), request.getStatus());
+        hireStatusResponse.setStatus(request.getStatus());
         return ResponseEntity.ok(hireStatusResponse);
     }
 

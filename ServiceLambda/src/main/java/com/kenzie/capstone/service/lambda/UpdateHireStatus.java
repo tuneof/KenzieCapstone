@@ -1,27 +1,24 @@
 package com.kenzie.capstone.service.lambda;
 
-import com.kenzie.capstone.service.HireStatusService;
-import com.kenzie.capstone.service.converter.JsonStringToHireStatusConverter;
-import com.kenzie.capstone.service.dependency.ServiceComponent;
-import com.kenzie.capstone.service.model.ExampleData;
-import com.kenzie.capstone.service.dependency.DaggerServiceComponent;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kenzie.capstone.service.HireStatusService;
+import com.kenzie.capstone.service.converter.JsonStringToHireStatusConverter;
+import com.kenzie.capstone.service.dependency.DaggerServiceComponent;
+import com.kenzie.capstone.service.dependency.ServiceComponent;
 import com.kenzie.capstone.service.model.HireRequest;
 import com.kenzie.capstone.service.model.HireResponse;
-import com.kenzie.capstone.service.model.HireStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class UpdateHireStatus implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     static final Logger log = LogManager.getLogger();
 
@@ -42,17 +39,9 @@ public class SetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
 
-//        String status = input.getBody();
-//
-//        if (status == null || status.length() == 0) {
-//            return response
-//                    .withStatusCode(400)
-//                    .withBody("data is invalid");
-//        }
-
         try {
             HireRequest hireRequest = jsonStringToHireStatusConverter.convert(input.getBody());
-            HireResponse hireResponse = hireService.setHireStatus(hireRequest);
+            HireResponse hireResponse = hireService.updateHireStatus(hireRequest);
             return response
                     .withStatusCode(200)
                     .withBody(gson.toJson(hireResponse));
