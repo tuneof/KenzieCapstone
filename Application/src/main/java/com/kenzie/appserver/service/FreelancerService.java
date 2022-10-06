@@ -5,11 +5,14 @@ import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
 import com.kenzie.capstone.service.model.HireStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FreelancerService {
@@ -103,6 +106,12 @@ public class FreelancerService {
     }
 
     public void deleteFreelancer(String id){
+        Optional<FreelancerRecord> optionalFreelancerRecord = freelancerRepository.findById(id);
+
+        if (optionalFreelancerRecord.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Freelancer does not exist.");
+        }
+
         freelancerRepository.deleteById(id);
     }
 }
