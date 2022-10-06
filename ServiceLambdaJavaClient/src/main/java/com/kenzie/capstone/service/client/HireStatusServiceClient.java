@@ -9,7 +9,7 @@ import com.kenzie.capstone.service.model.HireStatus;
 public class HireStatusServiceClient {
     private static final String GET_HIRESTATUS_ENDPOINT = "hirestatus/{id}";
     private static final String SET_HIRESTATUS_ENDPOINT = "hirestatus/set";
-    private static final String UPDATE_HIRESTATUS_ENDPOINT = "hirestatus/{id}";
+    private static final String UPDATE_HIRESTATUS_ENDPOINT = "hirestatus/update";
 
     private ObjectMapper mapper;
 
