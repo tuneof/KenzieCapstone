@@ -28,7 +28,7 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /status/{id}
+            Path: /hirestatus/{id}
             Method: get
   SetHireStatusFunction:
     Type: AWS::Serverless::Function
@@ -52,7 +52,7 @@ Resources:
         UpdateResource:
           Type: Api
           Properties:
-            Path: /status/
+            Path: /hirestatus/add
             Method: post
   UpdateHireStatusFunction:
     Type: AWS::Serverless::Function
@@ -76,6 +76,6 @@ Resources:
         UpdateResource:
            Type: Api
            Properties:
-             Path: /status/
+             Path: /hirestatus/update
              Method: post
 
