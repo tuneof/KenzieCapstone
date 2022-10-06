@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.web.server.ResponseStatusException;
 import org.testcontainers.shaded.okhttp3.Response;
 
@@ -17,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.mockito.Mockito.*;
@@ -272,20 +274,40 @@ public class FreelancerServiceTest {
         String rate = "$10";
         String location = "New York";
 
-        Freelancer expectedFreelancer = new Freelancer(id, name, expertise, rate, location, contact);
+        FreelancerRecord record = new FreelancerRecord();
+        record.setId(id);
+        record.setName(name);
+        record.setExpertise(expertise);
+        record.setContact(contact);
+        record.setLocation(location);
+        record.setRate(rate);
 
-        freelancerService.deleteFreelancer(expectedFreelancer.getId());
+        Optional<FreelancerRecord> recordOptional = Optional.of(record);
 
-        verify(freelancerRepository).deleteById(any());
-    }
-
-    @Test
-    void deleteFreelancer_freelancerDoesNotExist() {
-        String id = randomUUID().toString();
+        when(freelancerRepository.findById(id)).thenReturn(recordOptional);
+        doNothing().when(freelancerRepository).deleteById(id);
 
         freelancerService.deleteFreelancer(id);
 
         verify(freelancerRepository).deleteById(id);
+    }
+
+    @Test
+    void deleteFreelancer_freelancerDoesNotExist_throwsException() {
+        String id = UUID.randomUUID().toString();
+
+        Optional<FreelancerRecord> recordOptional = Optional.empty();
+
+        Mockito.when(freelancerRepository.findById(id)).thenReturn(recordOptional);
+
+        Exception exception = Assertions.assertThrows(ResponseStatusException.class, () -> {
+            freelancerService.deleteFreelancer(id);
+        });
+
+        String expectedMessage = "Freelancer does not exist.";
+        String actualMessage = exception.getMessage();
+
+        Assertions.assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test

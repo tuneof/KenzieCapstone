@@ -138,6 +138,12 @@ public class FreelancerService {
     }
 
     public void deleteFreelancer(String id){
+        Optional<FreelancerRecord> recordOptional = freelancerRepository.findById(id);
+
+        if (recordOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Freelancer does not exist.");
+        }
         freelancerRepository.deleteById(id);
+        cache.evict(id);
     }
 }
