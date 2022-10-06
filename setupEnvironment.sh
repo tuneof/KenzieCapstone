@@ -5,7 +5,7 @@
 export CAPSTONE_REPO_NAME=ata-capstone-project-occupost
 export GITHUB_USERNAME=bmamadiev
 # Fill out the following value with the group name in all lowercase and no spaces or special characters.
-export GITHUB_GROUP_NAME=we-the-best
+export GITHUB_GROUP_NAME=we-the-bestt
 
 # Step Two - configure your shell to always have these variables.
 # For OSX / Linux
