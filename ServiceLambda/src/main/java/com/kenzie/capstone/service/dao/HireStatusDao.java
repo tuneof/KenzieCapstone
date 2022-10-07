@@ -51,7 +51,7 @@ public class HireStatusDao {
         try {
             mapper.save(record, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
-                            "FreelancerId",
+                            "id",
                             new ExpectedAttributeValue().withExists(false)
                     )));
         } catch (ConditionalCheckFailedException e) {
@@ -64,7 +64,7 @@ public class HireStatusDao {
     public HireStatusRecord updateHireStatus(HireStatusRecord hireStatusRecord) {
         mapper.save(hireStatusRecord, new DynamoDBSaveExpression()
                 .withExpected(ImmutableMap.of(
-                        "FreelancerId",
+                        "id",
                         new ExpectedAttributeValue().withExists(true)
                 )));
         return hireStatusRecord;
