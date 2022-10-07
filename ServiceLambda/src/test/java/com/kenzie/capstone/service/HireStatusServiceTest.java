@@ -88,4 +88,31 @@ class HireStatusServiceTest {
         assertEquals(id, response.getId(), "The response id should match");
         assertEquals(status, response.getStatus(), "The response status should match");
     }
+
+    @Test
+    void updateHireStatusTest() {
+        ArgumentCaptor<HireStatusRecord> hireCaptor = ArgumentCaptor.forClass(HireStatusRecord.class);
+
+        // GIVEN
+        String id = "freelancerId";
+        String status = "hired";
+        HireRequest updateRequest = new HireRequest();
+        updateRequest.setId(id);
+        updateRequest.setStatus(status);
+
+        // WHEN
+        HireResponse response2 = this.hireService.updateHireStatus(updateRequest);
+
+        // THEN
+        verify(hireDao, times(1)).updateHireStatus(hireCaptor.capture());
+        HireStatusRecord record = hireCaptor.getValue();
+
+        assertNotNull(record, "The record is valid");
+        assertEquals(id, record.getId(), "The id matches");
+        assertEquals(status, record.getStatus(), "The status matches");
+
+        assertNotNull(response2, "A response is returned");
+        assertEquals(id, response2.getId(), "The response id should match");
+        assertEquals(status, response2.getStatus(), "The response status should match");
+    }
 }
