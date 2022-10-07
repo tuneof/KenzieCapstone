@@ -11,6 +11,10 @@ public class HireStatus {
         this.status = status;
     }
 
+    public HireStatus() {
+
+    }
+
     public String getId() {
         return id;
     }
