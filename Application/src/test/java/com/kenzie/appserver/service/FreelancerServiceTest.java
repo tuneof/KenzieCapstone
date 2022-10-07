@@ -5,6 +5,7 @@ import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
+import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.web.server.ResponseStatusException;
-import org.testcontainers.shaded.okhttp3.Response;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -117,6 +117,23 @@ public class FreelancerServiceTest {
 
         // THEN
         Assertions.assertNull(freelancer, "The example is null when not found");
+    }
+
+    @Test
+    void findById_not_null_cache() {
+        Freelancer freelancer = new Freelancer("1", "eric", "java", "5", "nyc", "email");
+
+        when(cacheStore.get("1")).thenReturn(freelancer);
+
+        Freelancer result = freelancerService.findById("1");
+
+        Assertions.assertNotNull(result, "The example is null when not found");
+        Assertions.assertEquals(result.getId(), freelancer.getId(), "same id");
+        Assertions.assertEquals(result.getName(), freelancer.getName(), "same id");
+        Assertions.assertEquals(result.getExpertise(), freelancer.getExpertise(), "same id");
+        Assertions.assertEquals(result.getRate(), freelancer.getRate(), "same id");
+        Assertions.assertEquals(result.getLocation(), freelancer.getLocation(), "same id");
+        Assertions.assertEquals(result.getContact(), freelancer.getContact(), "same id");
     }
 
     @Test
@@ -266,6 +283,32 @@ public class FreelancerServiceTest {
     }
 
     @Test
+    void updateFreelancer_not_same_user() {
+        String id = randomUUID().toString();
+        String contact = "911";
+        String expertise = "Fixer";
+        String name = "Fred";
+        String rate = "$10";
+        String location = "New York";
+
+        String name2 = "bob";
+
+        FreelancerRecord record = new FreelancerRecord();
+        record.setId(id);
+        record.setName(name);
+        record.setExpertise(expertise);
+        record.setRate(rate);
+        record.setLocation(location);
+        record.setContact(contact);
+
+        Freelancer unexpectedFreelancer = new Freelancer(id, name2, expertise, rate, location, contact);
+
+        when(freelancerRepository.findById(id)).thenReturn(Optional.of(record));
+
+        Assertions.assertThrows(ResponseStatusException.class, () -> freelancerService.updateFreelancer(unexpectedFreelancer));
+    }
+
+    @Test
     void deleteFreelancer_freelancerExistsToDelete(){
         String id = randomUUID().toString();
         String contact = "911";
@@ -319,6 +362,25 @@ public class FreelancerServiceTest {
         String status = freelancerService.getFreelancerHireStatus(freelancerId);
 
         Assertions.assertEquals("hired", status, "Status was correct");
+    }
+
+    @Test
+    void updateFreelancerHireStatus() {
+        String freelancerId = randomUUID().toString();
+        HireStatus hireStatus = new HireStatus(freelancerId, "not hired");
+        HireStatus updatedHireStatus = new HireStatus(freelancerId, "hired");
+        HireResponse resp = new HireResponse();
+        resp.setId(freelancerId);
+        resp.setStatus("hired");
+
+        when(hireServiceClient.getHireStatus(freelancerId)).thenReturn(hireStatus);
+        when(hireServiceClient.updateHireStatus(updatedHireStatus)).thenReturn(resp);
+
+        HireStatus result = freelancerService.updateFreelancerHireStatus(freelancerId, "hired");
+
+        Assertions.assertNotNull(result, "status not null");
+        Assertions.assertEquals(result.getId(), updatedHireStatus.getId(), "id same");
+        Assertions.assertEquals(result.getStatus(), updatedHireStatus.getStatus(), "status same");
     }
 
 }
