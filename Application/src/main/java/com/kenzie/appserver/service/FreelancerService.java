@@ -92,6 +92,10 @@ public class FreelancerService {
 
     public HireStatus updateFreelancerHireStatus(String freelancerId, String status) {
         HireStatus hireStatus = new HireStatus(freelancerId, status);
+//        HireRequest hireRequest = new HireRequest();
+//        hireRequest.setId(freelancerId);
+//        hireRequest.setStatus(status);
+//        hireStatusServiceClient.setHireStatus(hireRequest);
         hireStatusServiceClient.updateHireStatus(hireStatus);
 
         return hireStatus;
