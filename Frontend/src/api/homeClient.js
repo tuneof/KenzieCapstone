@@ -48,7 +48,7 @@ export default class HomeClient extends BaseClass {
 
     async updateFreelancer(request, errorCallback) {
         try {
-            const response = await this.client.put(`/freelancers/${id}`, {
+            const response = await this.client.put(`/freelancers/{request.id}`, {
                 id: request.id,
                 name: request.name,
                 expertise: request.expertise,

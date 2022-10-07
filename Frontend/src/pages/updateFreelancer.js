@@ -82,7 +82,7 @@ class UpdateFreelancer extends BaseClass {
 
 const main = async () => {
     const updateFreelancer = new UpdateFreelancer();
-    await updatePage.mount();
+    await updateFreelancer.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);
