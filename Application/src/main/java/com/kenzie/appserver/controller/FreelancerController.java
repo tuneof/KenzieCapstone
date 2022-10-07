@@ -105,7 +105,7 @@ public class FreelancerController {
         return ResponseEntity.ok(hireStatusResponse);
     }
 
-    @PutMapping
+    @PutMapping("/hirestatus/{id}")
     public ResponseEntity<HireStatusResponse> updateHireStatus(@RequestBody HireStatusUpdateRequest request) {
         HireStatusResponse hireStatusResponse = new HireStatusResponse();
         freelancerService.updateFreelancerHireStatus(request.getId(), request.getStatus());
