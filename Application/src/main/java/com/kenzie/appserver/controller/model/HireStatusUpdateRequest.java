@@ -1,16 +1,17 @@
 package com.kenzie.appserver.controller.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotEmpty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HireStatusUpdateRequest {
-    @NotEmpty
+
     @JsonProperty("id")
     private String id;
 
-    @NotEmpty
-    @JsonProperty("status")
+    @JsonProperty("hirestatus")
     private String status;
 
     public String getId() {
