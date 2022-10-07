@@ -2,6 +2,7 @@ package com.kenzie.appserver.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kenzie.appserver.IntegrationTest;
+import com.kenzie.appserver.config.CacheStore;
 import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
 import com.kenzie.appserver.controller.model.FreelancerResponse;
 import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
@@ -33,6 +34,7 @@ class FreelancerControllerTest {
 
     @Autowired
     FreelancerService freelancerService;
+    CacheStore cache;
 
     private final MockNeat mockNeat = MockNeat.threadLocal();
 

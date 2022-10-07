@@ -145,5 +145,6 @@ public class FreelancerService {
         }
 
         freelancerRepository.deleteById(id);
+        cache.evict(id);
     }
 }
