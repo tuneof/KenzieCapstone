@@ -33,11 +33,11 @@ public class UpdateHireStatus implements RequestHandler<APIGatewayProxyRequestEv
         ServiceComponent serviceComponent = DaggerServiceComponent.create();
         HireStatusService hireService = serviceComponent.provideHireStatusService();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/json");
 
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
-                .withHeaders(headers);
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+                //.withHeaders(headers);
 
         try {
             HireRequest hireRequest = jsonStringToHireStatusConverter.convert(input.getBody());

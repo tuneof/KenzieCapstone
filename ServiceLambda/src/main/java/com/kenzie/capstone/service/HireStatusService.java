@@ -22,7 +22,7 @@ public class HireStatusService {
     public HireStatus getHireStatus(String freelancerId) {
         List<HireStatusRecord> records = hireStatusDao.getHireStatus(freelancerId);
         if (records.size() > 0) {
-            return new HireStatus(records.get(0).getFreelancerId(), records.get(0).getStatus());
+            return new HireStatus(records.get(0).getId(), records.get(0).getStatus());
         }
 
         return null;
@@ -33,11 +33,11 @@ public class HireStatusService {
             throw new InvalidDataException("Request must not be null");
         }
         HireStatusRecord record = new HireStatusRecord();
-        record.setFreelancerId(hireRequest.getFreelancerId());
+        record.setId(hireRequest.getId());
         record.setStatus(hireRequest.getStatus());
         hireStatusDao.setHireStatus(record);
 
-        return new HireResponse(record.getFreelancerId(), record.getStatus());
+        return new HireResponse(record.getId(), record.getStatus());
     }
 
     public HireResponse updateHireStatus(HireRequest hireRequest) {
@@ -46,10 +46,10 @@ public class HireStatusService {
         }
 
         HireStatusRecord record = new HireStatusRecord();
-        record.setFreelancerId(hireRequest.getFreelancerId());
+        record.setId(hireRequest.getId());
         record.setStatus(hireRequest.getStatus());
         hireStatusDao.updateHireStatus(record);
 
-        return new HireResponse(record.getFreelancerId(), record.getStatus());
+        return new HireResponse(record.getId(), record.getStatus());
     }
 }

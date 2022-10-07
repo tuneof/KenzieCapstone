@@ -1,29 +1,22 @@
 package com.kenzie.capstone.service.model;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class HireStatus {
-    private String freelancerId;
-    private String hireStatusId;
+    private String id;
     private String status;
 
-    public HireStatus(String freelancerId, String status) {
-        this.freelancerId = freelancerId;
-        this.hireStatusId = UUID.randomUUID().toString();
+    public HireStatus(String id, String status) {
+        this.id = id;
         this.status = status;
     }
 
-    public String getFreelancerId() {
-        return freelancerId;
+    public String getId() {
+        return id;
     }
 
-    public void setFreelancerId(String freelancerId) {
-        this.freelancerId = freelancerId;
-    }
-
-    public String getHireStatusId() {
-        return hireStatusId;
+    public void setId(String freelancerId) {
+        this.id = freelancerId;
     }
 
     public String getStatus() {
@@ -39,11 +32,11 @@ public class HireStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HireStatus that = (HireStatus) o;
-        return Objects.equals(freelancerId, that.freelancerId) && Objects.equals(hireStatusId, that.hireStatusId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(freelancerId, hireStatusId);
+        return Objects.hash(id);
     }
 }

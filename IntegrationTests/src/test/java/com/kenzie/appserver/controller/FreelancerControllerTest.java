@@ -63,7 +63,7 @@ class FreelancerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createRequest)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isNotFound());
         //clean up
 //        mvc.perform(delete("/freelancers/delete/{id}", id))
 //                .andExpect(status().isNoContent());

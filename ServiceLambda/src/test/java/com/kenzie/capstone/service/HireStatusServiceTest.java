@@ -43,7 +43,7 @@ class HireStatusServiceTest {
         String id = "freelancerId";
         String status = "hired";
         HireRequest request = new HireRequest();
-        request.setFreelancerId(id);
+        request.setId(id);
         request.setStatus(status);
 
         // WHEN
@@ -54,11 +54,11 @@ class HireStatusServiceTest {
         HireStatusRecord record = hireCaptor.getValue();
 
         assertNotNull(record, "The record is valid");
-        assertEquals(id, record.getFreelancerId(), "The id matches");
+        assertEquals(id, record.getId(), "The id matches");
         assertEquals(status, record.getStatus(), "The status matches");
 
         assertNotNull(response, "A response is returned");
-        assertEquals(id, response.getFreelancerId(), "The response id should match");
+        assertEquals(id, response.getId(), "The response id should match");
         assertEquals(status, response.getStatus(), "The response status should match");
     }
 
@@ -70,7 +70,7 @@ class HireStatusServiceTest {
         String id = "fakeid";
         String status = "hired";
         HireStatusRecord record = new HireStatusRecord();
-        record.setFreelancerId(id);
+        record.setId(id);
         record.setStatus(status);
 
 
@@ -85,7 +85,7 @@ class HireStatusServiceTest {
         assertEquals(id, idCaptor.getValue(), "The correct id is used");
 
         assertNotNull(response, "A response is returned");
-        assertEquals(id, response.getFreelancerId(), "The response id should match");
+        assertEquals(id, response.getId(), "The response id should match");
         assertEquals(status, response.getStatus(), "The response status should match");
     }
 }

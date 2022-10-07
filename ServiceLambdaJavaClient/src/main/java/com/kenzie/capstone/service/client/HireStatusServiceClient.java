@@ -49,7 +49,7 @@ public class HireStatusServiceClient {
 
     public HireResponse updateHireStatus(HireStatus hireStatus) {
         EndpointUtility endpointUtility = new EndpointUtility();
-        HireRequest hireRequest = new HireRequest(hireStatus.getFreelancerId(), hireStatus.getStatus());
+        HireRequest hireRequest = new HireRequest(hireStatus.getId(), hireStatus.getStatus());
         String updateRequest;
         try {
             updateRequest = mapper.writeValueAsString(hireRequest);

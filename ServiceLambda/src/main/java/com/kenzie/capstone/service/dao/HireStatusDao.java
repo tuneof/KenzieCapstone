@@ -34,7 +34,7 @@ public class HireStatusDao {
 
     public List<HireStatusRecord> getHireStatus(String freelancerId) {
         HireStatusRecord record = new HireStatusRecord();
-        record.setFreelancerId(freelancerId);
+        record.setId(freelancerId);
 
         DynamoDBQueryExpression<HireStatusRecord> queryExpression = new DynamoDBQueryExpression<HireStatusRecord>()
                 .withHashKeyValues(record)
@@ -45,7 +45,7 @@ public class HireStatusDao {
 
     public HireStatusRecord setHireStatus(HireStatusRecord hireStatusRecord) {
         HireStatusRecord record = new HireStatusRecord();
-        record.setFreelancerId(hireStatusRecord.getFreelancerId());
+        record.setId(hireStatusRecord.getId());
         record.setStatus(hireStatusRecord.getStatus());
 
         try {
@@ -65,7 +65,7 @@ public class HireStatusDao {
         mapper.save(hireStatusRecord, new DynamoDBSaveExpression()
                 .withExpected(ImmutableMap.of(
                         "FreelancerId",
-                        new ExpectedAttributeValue().withExists(false)
+                        new ExpectedAttributeValue().withExists(true)
                 )));
         return hireStatusRecord;
     }

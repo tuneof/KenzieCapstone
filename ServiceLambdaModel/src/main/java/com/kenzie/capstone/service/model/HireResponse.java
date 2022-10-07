@@ -1,11 +1,11 @@
 package com.kenzie.capstone.service.model;
 
 public class HireResponse {
-    private String freelancerId;
+    private String id;
     private String status;
 
-    public HireResponse(String freelancerId, String status) {
-        this.freelancerId = freelancerId;
+    public HireResponse(String id, String status) {
+        this.id = id;
         this.status = status;
     }
 
@@ -13,12 +13,12 @@ public class HireResponse {
 
     }
 
-    public String getFreelancerId() {
-        return freelancerId;
+    public String getId() {
+        return id;
     }
 
-    public void setFreelancerId(String freelancerId) {
-        this.freelancerId = freelancerId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getStatus() {
@@ -32,7 +32,7 @@ public class HireResponse {
     @Override
     public String toString() {
         return "HireResponse{" +
-                "freelancerId='" + freelancerId + '\'' +
+                "id='" + id + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }

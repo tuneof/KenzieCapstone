@@ -3,7 +3,6 @@ package com.kenzie.capstone.service.lambda;
 import com.kenzie.capstone.service.HireStatusService;
 import com.kenzie.capstone.service.converter.JsonStringToHireStatusConverter;
 import com.kenzie.capstone.service.dependency.ServiceComponent;
-import com.kenzie.capstone.service.model.ExampleData;
 import com.kenzie.capstone.service.dependency.DaggerServiceComponent;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -14,12 +13,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kenzie.capstone.service.model.HireRequest;
 import com.kenzie.capstone.service.model.HireResponse;
-import com.kenzie.capstone.service.model.HireStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -36,11 +31,11 @@ public class SetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent
         ServiceComponent serviceComponent = DaggerServiceComponent.create();
         HireStatusService hireService = serviceComponent.provideHireStatusService();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/json");
 
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
-                .withHeaders(headers);
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+                //.withHeaders(headers);
 
 //        String status = input.getBody();
 //

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 public class HireStatusUpdateRequest {
     @NotEmpty
-    @JsonProperty("freelancerId")
+    @JsonProperty("id")
     private String id;
 
     @NotEmpty
