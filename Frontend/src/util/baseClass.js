@@ -24,7 +24,7 @@ export default class BaseClass {
      * Creates a div containing all elements to display freelancer details.
      * @param book element from the datastore, which details are taken from.
      */
-    createFreelancerDiv(freelancer) {
+    createFreelancerDiv(freelancer, hireStatus) {
         let result = document.getElementById("freelancer-container");
 
         while (result.firstChild) {
@@ -43,6 +43,8 @@ export default class BaseClass {
         freelancerDiv.appendChild(document.createTextNode(`Location: ${freelancer.location}`));
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createTextNode(`Contact: ${freelancer.contact}`));
+        freelancerDiv.appendChild(document.createElement('br'));
+        freelancerDiv.appendChild(document.createTextNode(`Contact: ${hireStatus.hirestatus}`));
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createElement('br'));
         result.appendChild(freelancerDiv);

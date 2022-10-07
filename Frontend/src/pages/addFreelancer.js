@@ -19,9 +19,10 @@ class AddFreelancer extends BaseClass {
 
     async renderFreelancerDetails() {
         const freelancer = this.dataStore.get("addedFreelancer");
+        const hireStatus = this.dataStore.get("hireStatus");
 
         if (freelancer) {
-            this.createFreelancerDiv(freelancer);
+            this.createFreelancerDiv(freelancer, hireStatus);
         }
     }
 
@@ -44,7 +45,11 @@ class AddFreelancer extends BaseClass {
         request.contact = contact;
 
         const addedFreelancer = await this.client.addNewFreelancer(request, this.errorHandler);
-          this.dataStore.set("addedFreelancer", addedFreelancer);
+        this.dataStore.set("addedFreelancer", addedFreelancer);
+
+        const freelancer = this.dataStore.get("addedFreelancer");
+        let result2 = await this.client.getFreelancerHireStatus(freelancer.id, this.errorHandler);
+        this.dataStore.set("hireStatus", result2);
 
         if (addedFreelancer) {
             this.showMessage(`Created ${addedFreelancer.name}!`)
