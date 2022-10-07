@@ -3,10 +3,7 @@ package com.kenzie.appserver.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kenzie.appserver.IntegrationTest;
 import com.kenzie.appserver.config.CacheStore;
-import com.kenzie.appserver.controller.model.FreelancerCreateRequest;
-import com.kenzie.appserver.controller.model.FreelancerResponse;
-import com.kenzie.appserver.controller.model.FreelancerUpdateRequest;
-import com.kenzie.appserver.controller.model.HireStatusResponse;
+import com.kenzie.appserver.controller.model.*;
 import com.kenzie.appserver.service.FreelancerService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -282,6 +279,43 @@ class FreelancerControllerTest {
         ResultActions actions = mvc.perform(get("/freelancers/{id}/hirestatus", id)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+
+        HireStatusResponse hireStatusResponse = mapper.readValue(responseBody, new TypeReference<HireStatusResponse>() {} );
+
+        assertThat(hireStatusResponse.getStatus()).isNotEmpty().as("The status is populated");
+    }
+
+    @Test
+    public void updateHireStatus_success() throws Exception {
+        FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
+        createRequest.setName("erict");
+        createRequest.setContact("tuneric@gmail.com");
+        createRequest.setRate("5/hour");
+        createRequest.setLocation("nyc");
+        createRequest.setExpertise("js");
+
+        mapper.registerModule(new JavaTimeModule());
+
+        String response = mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        String id = mapper.readValue(response, new TypeReference<FreelancerResponse>() {} ).getId();
+
+        HireStatusUpdateRequest updateRequest = new HireStatusUpdateRequest();
+        updateRequest.setId(id);
+        updateRequest.setStatus("hired");
+
+        ResultActions actions = mvc.perform(put("/freelancers/" + id + "/hirestatus")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
         String responseBody = actions.andReturn().getResponse().getContentAsString();
