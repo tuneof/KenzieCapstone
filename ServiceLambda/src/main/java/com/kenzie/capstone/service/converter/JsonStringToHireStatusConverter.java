@@ -11,8 +11,7 @@ public class JsonStringToHireStatusConverter {
         try {
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            HireRequest hireRequest = gson.fromJson(body, HireRequest.class);
-            return hireRequest;
+            return gson.fromJson(body, HireRequest.class);
         } catch (Exception e) {
             throw new InvalidDataException("Referral could not be deserialized");
         }

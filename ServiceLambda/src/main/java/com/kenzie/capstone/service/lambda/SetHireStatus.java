@@ -31,19 +31,7 @@ public class SetHireStatus implements RequestHandler<APIGatewayProxyRequestEvent
         ServiceComponent serviceComponent = DaggerServiceComponent.create();
         HireStatusService hireService = serviceComponent.provideHireStatusService();
 
-//        Map<String, String> headers = new HashMap<>();
-//        headers.put("Content-Type", "application/json");
-
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-                //.withHeaders(headers);
-
-//        String status = input.getBody();
-//
-//        if (status == null || status.length() == 0) {
-//            return response
-//                    .withStatusCode(400)
-//                    .withBody("data is invalid");
-//        }
 
         try {
             HireRequest hireRequest = jsonStringToHireStatusConverter.convert(input.getBody());
