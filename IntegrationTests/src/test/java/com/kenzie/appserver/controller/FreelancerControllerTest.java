@@ -34,7 +34,6 @@ class FreelancerControllerTest {
 
     @Autowired
     FreelancerService freelancerService;
-    CacheStore cache;
 
     private final MockNeat mockNeat = MockNeat.threadLocal();
 
@@ -65,7 +64,7 @@ class FreelancerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createRequest)))
-                        .andExpect(status().isNotFound());
+                        .andExpect(status().isOk());
         //clean up
 //        mvc.perform(delete("/freelancers/delete/{id}", id))
 //                .andExpect(status().isNoContent());

@@ -19,8 +19,6 @@ export GITHUB_GROUP_NAME=we-the-bestt
 
 # Confirm set up by using echo $CAPSTONE_REPO_NAME and it should return what you typed in.
 
-
-
 # Do not modify the rest of these unless you have been instructed to decho $CAPSTONE_REPO_NAMEo so.
 export CAPSTONE_PROJECT_NAME=capstone
 export CAPSTONE_PIPELINE_STACK=$CAPSTONE_PROJECT_NAME-$GITHUB_GROUP_NAME
