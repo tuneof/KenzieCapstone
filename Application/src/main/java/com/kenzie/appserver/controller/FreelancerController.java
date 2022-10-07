@@ -98,14 +98,15 @@ public class FreelancerController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{id}/hirestatus")
+    @GetMapping("/{id}/hirestatus")
     public ResponseEntity<HireStatusResponse> getHireStatus(@PathVariable("id") String id) {
+        String status = freelancerService.getFreelancerHireStatus(id);
         HireStatusResponse hireStatusResponse = new HireStatusResponse();
-        hireStatusResponse.setStatus(freelancerService.getFreelancerHireStatus(id));
+        hireStatusResponse.setStatus(status);
         return ResponseEntity.ok(hireStatusResponse);
     }
 
-    @PutMapping("{id}/hirestatus")
+    @PutMapping("/{id}/hirestatus")
     public ResponseEntity<HireStatusResponse> updateHireStatus(@RequestBody HireStatusUpdateRequest request) {
         HireStatusResponse hireStatusResponse = new HireStatusResponse();
         freelancerService.updateFreelancerHireStatus(request.getId(), request.getStatus());
