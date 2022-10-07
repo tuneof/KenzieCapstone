@@ -68,7 +68,7 @@ public class FreelancerController {
     }
 
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<FreelancerResponse> updateFreelancer(@RequestBody FreelancerUpdateRequest request) {
         //if the freelancer that is being updated doesn't exist, returns 204
         if (freelancerService.findById(request.getId()) == null) {

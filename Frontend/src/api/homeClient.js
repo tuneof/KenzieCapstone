@@ -5,7 +5,7 @@ export default class HomeClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getAllFreelancers', 'addNewFreelancer', 'deleteFreelancer'];
+        const methodsToBind = ['clientLoaded', 'getAllFreelancers', 'addNewFreelancer', 'deleteFreelancer', 'updateFreelancer', 'findFreelancerById'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -48,7 +48,7 @@ export default class HomeClient extends BaseClass {
 
     async updateFreelancer(request, errorCallback) {
         try {
-            const response = await this.client.put(`/freelancers`, {
+            const response = await this.client.put(`/freelancers/${id}`, {
                 id: request.id,
                 name: request.name,
                 expertise: request.expertise,
