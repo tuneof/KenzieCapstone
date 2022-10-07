@@ -149,7 +149,7 @@ class FreelancerControllerTest {
         updateRequest.setContact(updatedContact);
 
         //WHEN THEN
-        mvc.perform(put("/freelancers")
+        mvc.perform(put("/freelancers/" + id)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(updateRequest)))
