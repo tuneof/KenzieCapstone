@@ -287,4 +287,37 @@ class FreelancerControllerTest {
 
         assertThat(hireStatusResponse.getStatus()).isNotEmpty().as("The status is populated");
     }
+
+    @Test
+    public void getHireStatusChange_success() throws Exception {
+        FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
+        createRequest.setName("eric");
+        createRequest.setContact("eric@gmail.com");
+        createRequest.setRate("2/hour");
+        createRequest.setLocation("nyc");
+        createRequest.setExpertise("Java");
+
+        mapper.registerModule(new JavaTimeModule());
+
+        String response = mvc.perform(post("/freelancers")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createRequest)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        String id = mapper.readValue(response, new TypeReference<FreelancerResponse>() {} ).getId();
+
+        ResultActions actions = mvc.perform(get("/freelancers/{id}/random", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+
+        HireStatusResponse hireStatusResponse = mapper.readValue(responseBody, new TypeReference<HireStatusResponse>() {} );
+
+        assertThat(hireStatusResponse.getStatus()).isNotEmpty().as("The status is populated");
+        assertThat(hireStatusResponse.getStatus()).isEqualTo("Hired").as("The correct status is populated");
+    }
 }
