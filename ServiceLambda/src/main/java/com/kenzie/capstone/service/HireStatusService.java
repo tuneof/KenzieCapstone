@@ -39,17 +39,4 @@ public class HireStatusService {
 
         return new HireResponse(record.getId(), record.getStatus());
     }
-
-    public HireResponse updateHireStatus(HireRequest hireRequest) {
-        if (hireRequest == null) {
-            throw new InvalidDataException("Request must not be null");
-        }
-
-        HireStatusRecord record = new HireStatusRecord();
-        record.setId(hireRequest.getId());
-        record.setStatus(hireRequest.getStatus());
-        hireStatusDao.updateHireStatus(record);
-
-        return new HireResponse(record.getId(), record.getStatus());
-    }
 }

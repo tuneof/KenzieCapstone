@@ -21,20 +21,6 @@ public class HireStatusDao {
         this.mapper = mapper;
     }
 
-    public HireStatus storeHireStatus(HireStatus hireStatus) {
-        try {
-            mapper.save(hireStatus, new DynamoDBSaveExpression()
-                    .withExpected(ImmutableMap.of(
-                            "FreelancerId",
-                            new ExpectedAttributeValue().withExists(false)
-                    )));
-        } catch (ConditionalCheckFailedException e) {
-            throw new IllegalArgumentException("FreelancerId has already been used");
-        }
-
-        return hireStatus;
-    }
-
     public List<HireStatusRecord> getHireStatus(String freelancerId) {
         HireStatusRecord record = new HireStatusRecord();
         record.setId(freelancerId);
@@ -51,23 +37,12 @@ public class HireStatusDao {
         record.setId(hireStatusRecord.getId());
         record.setStatus(hireStatusRecord.getStatus());
 
-
         if(record.getStatus().equals("Hired")) {
             HireStatusRecord dummy = new HireStatusRecord();
             dummy.setId(record.getId());
             dummy.setStatus("Not hired");
             mapper.delete(dummy);
-            try {
-                mapper.save(record, new DynamoDBSaveExpression()
-                        .withExpected(ImmutableMap.of(
-                                "id",
-                                new ExpectedAttributeValue().withExists(false)
-                        )));
-            } catch (ConditionalCheckFailedException e) {
-                throw new IllegalArgumentException("FreelancerId already exists");
-            }
         }
-
         try {
             mapper.save(record, new DynamoDBSaveExpression()
                     .withExpected(ImmutableMap.of(
@@ -79,19 +54,5 @@ public class HireStatusDao {
         }
 
         return record;
-    }
-
-    public HireStatusRecord updateHireStatus(HireStatusRecord hireStatusRecord) {
-        try {
-            mapper.save(hireStatusRecord, new DynamoDBSaveExpression()
-                    .withExpected(ImmutableMap.of(
-                            "id",
-                            new ExpectedAttributeValue().withExists(true)
-                    )));
-        } catch (ConditionalCheckFailedException e) {
-            throw new IllegalArgumentException("FreelancerId does not exist");
-        }
-
-        return hireStatusRecord;
     }
 }

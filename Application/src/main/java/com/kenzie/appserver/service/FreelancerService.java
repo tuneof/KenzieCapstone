@@ -96,7 +96,6 @@ public class FreelancerService {
         hireRequest.setId(freelancerId);
         hireRequest.setStatus(status);
         hireStatusServiceClient.setHireStatus(hireRequest);
-        hireStatusServiceClient.setHireStatus(hireRequest);
 
         return hireStatus;
     }

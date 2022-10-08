@@ -94,6 +94,15 @@ export default class HomeClient extends BaseClass {
             this.handleError("getFreelancerHireStatus", error, errorCallback)
         }
     }
+
+    async getHireStatusChange(id, errorCallback) {
+            try {
+                const response = await this.client.get(`/freelancers/${id}/random`);
+                return response.data;
+            } catch (error) {
+                this.handleError("getFreelancerHireStatus", error, errorCallback)
+            }
+        }
     /**
      * Helper method to log the error and run any error functions.
      * @param error The error received from the server.

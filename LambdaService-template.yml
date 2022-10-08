@@ -54,28 +54,4 @@ Resources:
           Properties:
             Path: /hirestatus/set
             Method: post
-  UpdateHireStatusFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ServiceLambda/build/distributions/ServiceLambda.zip
-      Handler: com.kenzie.capstone.service.lambda.UpdateHireStatus
-      Runtime: java11
-      Description: Update Hire Status
-      MemorySize: 3008
-      Timeout: 240
-      # Function's execution role
-      Policies:
-        - AWSLambdaBasicExecutionRole
-        - AWSLambda_ReadOnlyAccess
-        - AWSXrayWriteOnlyAccess
-        - AWSLambdaVPCAccessExecutionRole
-        - AmazonS3FullAccess
-        - AmazonDynamoDBFullAccess
-      Tracing: Active
-      Events:
-        UpdateResource:
-           Type: Api
-           Properties:
-             Path: /hirestatus/update
-             Method: put
 
