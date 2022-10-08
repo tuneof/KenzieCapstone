@@ -13,7 +13,7 @@ Resources:
       Handler: com.kenzie.capstone.service.lambda.GetHireStatus
       Runtime: java11
       Description: Get Hire Status for given id
-      MemorySize: 512
+      MemorySize: 3008
       Timeout: 240
       # Function's execution role
       Policies:
@@ -37,7 +37,7 @@ Resources:
       Handler: com.kenzie.capstone.service.lambda.SetHireStatus
       Runtime: java11
       Description: Set Hire Status
-      MemorySize: 512
+      MemorySize: 3008
       Timeout: 240
       # Function's execution role
       Policies:
@@ -61,7 +61,7 @@ Resources:
       Handler: com.kenzie.capstone.service.lambda.UpdateHireStatus
       Runtime: java11
       Description: Update Hire Status
-      MemorySize: 512
+      MemorySize: 3008
       Timeout: 240
       # Function's execution role
       Policies:

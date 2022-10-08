@@ -37,8 +37,10 @@ class HomePage extends BaseClass {
         for(let freelancer of freelancers) {
            html += `
                <li>
-                    <h3>${freelancer.name}</h3>
-                    <p>Id: ${freelancer.id}</p>
+                    <div style="font-size: 20px"><strong>${freelancer.name}</strong></div>
+                    <div>ID: ${freelancer.id}</div>
+                    <div>Expertise: ${freelancer.expertise}</div>
+                    <br>
                </li>
            `
         }

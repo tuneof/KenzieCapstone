@@ -56,7 +56,7 @@ public class FreelancerService {
 
         HireRequest hireRequest = new HireRequest();
         hireRequest.setId(freelancerRecord.getId());
-        hireRequest.setStatus("Not hired");
+        hireRequest.setStatus("Available");
         hireStatusServiceClient.setHireStatus(hireRequest);
 
         cache.add(freelancer.getId(), freelancer);

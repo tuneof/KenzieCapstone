@@ -21,9 +21,10 @@ class GetFreelancer extends BaseClass {
 
     async renderFreelancerDetails() {
         const freelancer = this.dataStore.get("freelancer");
+        const hireStatus = this.dataStore.get("hireStatus");
 
         if (freelancer) {
-            this.createFreelancerDiv(freelancer);
+            this.createFreelancerDiv(freelancer, hireStatus);
         }
     }
 
@@ -37,6 +38,9 @@ class GetFreelancer extends BaseClass {
 
         let result = await this.client.findFreelancerById(id, this.errorHandler);
         this.dataStore.set("freelancer", result);
+
+        let result2 = await this.client.getFreelancerHireStatus(id, this.errorHandler);
+        this.dataStore.set("hireStatus", result2);
 
         if (!result) {
             this.errorHandler("Error doing GET! Try again...");
