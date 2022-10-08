@@ -1,6 +1,7 @@
 package com.kenzie.capstone.service;
 
 import com.kenzie.capstone.service.dao.HireStatusDao;
+import com.kenzie.capstone.service.exceptions.InvalidDataException;
 import com.kenzie.capstone.service.model.HireRequest;
 import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -80,12 +82,31 @@ class HireStatusServiceTest {
         HireStatus response = this.hireService.getHireStatus(id);
 
         // THEN
-        verify(hireDao, times(1)).getHireStatus(idCaptor.capture());
+        verify(hireDao, times(2)).getHireStatus(idCaptor.capture());
 
         assertEquals(id, idCaptor.getValue(), "The correct id is used");
 
         assertNotNull(response, "A response is returned");
         assertEquals(id, response.getId(), "The response id should match");
         assertEquals(status, response.getStatus(), "The response status should match");
+    }
+
+    @Test
+    void getHireStatusTest_null() {
+        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+
+        // GIVEN
+        String id = "fakeid2";
+
+        when(hireDao.getHireStatus(id)).thenReturn(Collections.emptyList());
+
+        HireStatus nullResponse = this.hireService.getHireStatus(id);
+
+        assertNull(nullResponse, "A null response is returned");
+    }
+
+    @Test
+    void setHireStatusTest_exception() {
+        Assertions.assertThrows(InvalidDataException.class, () -> this.hireService.setHireStatus(null));
     }
 }
