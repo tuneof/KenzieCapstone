@@ -1,5 +1,6 @@
 package com.kenzie.capstone.service.dao;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDeleteExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -49,6 +50,23 @@ public class HireStatusDao {
         HireStatusRecord record = new HireStatusRecord();
         record.setId(hireStatusRecord.getId());
         record.setStatus(hireStatusRecord.getStatus());
+
+
+        if(record.getStatus().equals("Hired")) {
+            HireStatusRecord dummy = new HireStatusRecord();
+            dummy.setId(record.getId());
+            dummy.setStatus("Not hired");
+            mapper.delete(dummy);
+            try {
+                mapper.save(record, new DynamoDBSaveExpression()
+                        .withExpected(ImmutableMap.of(
+                                "id",
+                                new ExpectedAttributeValue().withExists(false)
+                        )));
+            } catch (ConditionalCheckFailedException e) {
+                throw new IllegalArgumentException("FreelancerId already exists");
+            }
+        }
 
         try {
             mapper.save(record, new DynamoDBSaveExpression()
