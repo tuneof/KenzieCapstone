@@ -77,5 +77,5 @@ Resources:
            Type: Api
            Properties:
              Path: /hirestatus/update
-             Method: post
+             Method: put
 

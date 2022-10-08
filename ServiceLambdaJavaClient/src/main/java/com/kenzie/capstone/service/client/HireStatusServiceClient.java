@@ -56,7 +56,7 @@ public class HireStatusServiceClient {
         } catch(JsonProcessingException e) {
             throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
         }
-        String response = endpointUtility.postEndpoint(UPDATE_HIRESTATUS_ENDPOINT, updateRequest);
+        String response = endpointUtility.putEndpoint(UPDATE_HIRESTATUS_ENDPOINT, updateRequest);
         HireResponse hireResponse;
         try {
             hireResponse = mapper.readValue(response, HireResponse.class);
