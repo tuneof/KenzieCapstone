@@ -44,11 +44,35 @@ export default class BaseClass {
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createTextNode(`Contact: ${freelancer.contact}`));
         freelancerDiv.appendChild(document.createElement('br'));
-        freelancerDiv.appendChild(document.createTextNode(`Contact: ${hireStatus.hirestatus}`));
+        freelancerDiv.appendChild(document.createTextNode(`Hire Status: ${hireStatus.hirestatus}`));
         freelancerDiv.appendChild(document.createElement('br'));
         freelancerDiv.appendChild(document.createElement('br'));
         result.appendChild(freelancerDiv);
     }
+
+    createFreelancerAddDiv(freelancer) {
+            let result = document.getElementById("freelancer-container");
+
+            while (result.firstChild) {
+                result.removeChild(result.firstChild);
+            }
+
+            const freelancerDiv = document.createElement('div');
+            const title = document.createElement('h3');
+            title.innerText = freelancer.name;
+
+            freelancerDiv.appendChild(title);
+            freelancerDiv.appendChild(document.createTextNode(`Expertise: ${freelancer.expertise}`));
+            freelancerDiv.appendChild(document.createElement('br'));
+            freelancerDiv.appendChild(document.createTextNode(`Hourly rate: ${freelancer.rate}`));
+            freelancerDiv.appendChild(document.createElement('br'));
+            freelancerDiv.appendChild(document.createTextNode(`Location: ${freelancer.location}`));
+            freelancerDiv.appendChild(document.createElement('br'));
+            freelancerDiv.appendChild(document.createTextNode(`Contact: ${freelancer.contact}`));
+            freelancerDiv.appendChild(document.createElement('br'));
+            freelancerDiv.appendChild(document.createElement('br'));
+            result.appendChild(freelancerDiv);
+        }
 
     showMessage(message) {
         Toastify({

@@ -21,7 +21,7 @@ class UpdateFreelancer extends BaseClass {
         const freelancer = this.dataStore.get("updatedFreelancer");
 
         if (freelancer) {
-            this.createFreelancerDiv(freelancer);
+            this.createFreelancerAddDiv(freelancer);
         }
     }
 
