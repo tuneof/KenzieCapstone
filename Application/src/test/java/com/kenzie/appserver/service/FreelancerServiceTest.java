@@ -5,6 +5,7 @@ import com.kenzie.appserver.repositories.FreelancerRepository;
 import com.kenzie.appserver.repositories.model.FreelancerRecord;
 import com.kenzie.appserver.service.model.Freelancer;
 import com.kenzie.capstone.service.client.HireStatusServiceClient;
+import com.kenzie.capstone.service.model.HireRequest;
 import com.kenzie.capstone.service.model.HireResponse;
 import com.kenzie.capstone.service.model.HireStatus;
 import org.junit.jupiter.api.Assertions;
@@ -366,21 +367,19 @@ public class FreelancerServiceTest {
 
     @Test
     void updateFreelancerHireStatus() {
-        String freelancerId = randomUUID().toString();
-        HireStatus hireStatus = new HireStatus(freelancerId, "not hired");
-        HireStatus updatedHireStatus = new HireStatus(freelancerId, "hired");
-        HireResponse resp = new HireResponse();
-        resp.setId(freelancerId);
-        resp.setStatus("hired");
+        HireRequest hireRequest = new HireRequest();
+        hireRequest.setId("id");
+        hireRequest.setStatus("stat");
 
-        when(hireServiceClient.getHireStatus(freelancerId)).thenReturn(hireStatus);
-        when(hireServiceClient.updateHireStatus(updatedHireStatus)).thenReturn(resp);
+        HireResponse hireResponse = new HireResponse();
+        hireResponse.setId("id");
+        hireRequest.setStatus("stat2");
 
-        HireStatus result = freelancerService.updateFreelancerHireStatus(freelancerId, "hired");
+        when(hireServiceClient.setHireStatus(hireRequest)).thenReturn(hireResponse);
 
-        Assertions.assertNotNull(result, "status not null");
-        Assertions.assertEquals(result.getId(), updatedHireStatus.getId(), "id same");
-        Assertions.assertEquals(result.getStatus(), updatedHireStatus.getStatus(), "status same");
+        HireStatus result = freelancerService.updateFreelancerHireStatus("id", "stat2");
+
+        Assertions.assertEquals(result.getStatus(), "stat2", "status was correct");
     }
 
 }
