@@ -9,7 +9,6 @@ import com.kenzie.capstone.service.model.HireStatus;
 public class HireStatusServiceClient {
     private static final String GET_HIRESTATUS_ENDPOINT = "hirestatus/{id}";
     private static final String SET_HIRESTATUS_ENDPOINT = "hirestatus/set";
-    private static final String UPDATE_HIRESTATUS_ENDPOINT = "hirestatus/update";
 
     private ObjectMapper mapper;
 
@@ -38,25 +37,6 @@ public class HireStatusServiceClient {
             throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
         }
         String response = endpointUtility.postEndpoint(SET_HIRESTATUS_ENDPOINT, request);
-        HireResponse hireResponse;
-        try {
-            hireResponse = mapper.readValue(response, HireResponse.class);
-        } catch (Exception e) {
-            throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
-        }
-        return hireResponse;
-    }
-
-    public HireResponse updateHireStatus(HireStatus hireStatus) {
-        EndpointUtility endpointUtility = new EndpointUtility();
-        HireRequest hireRequest = new HireRequest(hireStatus.getId(), hireStatus.getStatus());
-        String updateRequest;
-        try {
-            updateRequest = mapper.writeValueAsString(hireRequest);
-        } catch(JsonProcessingException e) {
-            throw new ApiGatewayException("Unable to map deserialize JSON: " + e);
-        }
-        String response = endpointUtility.postEndpoint(UPDATE_HIRESTATUS_ENDPOINT, updateRequest);
         HireResponse hireResponse;
         try {
             hireResponse = mapper.readValue(response, HireResponse.class);

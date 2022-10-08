@@ -6,12 +6,13 @@ class GetFreelancer extends BaseClass {
 
     constructor() {
         super();
-        this.bindClassMethods(['renderFreelancerDetails', 'onGet'], this);
+        this.bindClassMethods(['renderFreelancerDetails', 'onGet', 'onGetHire'], this);
         this.dataStore = new DataStore();
     }
 
     async mount() {
         document.getElementById('get-freelancer-details-form').addEventListener('submit', this.onGet);
+        document.getElementById('hire').addEventListener('click', this.onGetHire);
         this.client = new HomeClient();
 
         this.dataStore.addChangeListener(this.renderFreelancerDetails)
@@ -52,6 +53,17 @@ class GetFreelancer extends BaseClass {
 
         const container = document.getElementById('container');
         container.classList.add('show');
+    }
+
+    async onGetHire(event) {
+        event.preventDefault();
+
+        const freelancer = this.dataStore.get("freelancer");
+        let id = freelancer.id;
+
+        let result = await this.client.getHireStatusChange(id, this.errorHandler);
+
+        container.classList.remove('show');
     }
 }
 

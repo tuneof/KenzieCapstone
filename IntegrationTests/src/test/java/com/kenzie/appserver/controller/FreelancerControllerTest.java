@@ -289,13 +289,13 @@ class FreelancerControllerTest {
     }
 
     @Test
-    public void updateHireStatus_success() throws Exception {
+    public void getHireStatusChange_success() throws Exception {
         FreelancerCreateRequest createRequest = new FreelancerCreateRequest();
-        createRequest.setName("erict");
-        createRequest.setContact("tuneric@gmail.com");
-        createRequest.setRate("5/hour");
+        createRequest.setName("eric");
+        createRequest.setContact("eric@gmail.com");
+        createRequest.setRate("2/hour");
         createRequest.setLocation("nyc");
-        createRequest.setExpertise("js");
+        createRequest.setExpertise("Java");
 
         mapper.registerModule(new JavaTimeModule());
 
@@ -308,14 +308,9 @@ class FreelancerControllerTest {
 
         String id = mapper.readValue(response, new TypeReference<FreelancerResponse>() {} ).getId();
 
-        HireStatusUpdateRequest updateRequest = new HireStatusUpdateRequest();
-        updateRequest.setId(id);
-        updateRequest.setStatus("hired");
-
-        ResultActions actions = mvc.perform(put("/freelancers/" + id + "/hirestatus")
+        ResultActions actions = mvc.perform(get("/freelancers/{id}/random", id)
                         .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(updateRequest)))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         String responseBody = actions.andReturn().getResponse().getContentAsString();
@@ -323,5 +318,6 @@ class FreelancerControllerTest {
         HireStatusResponse hireStatusResponse = mapper.readValue(responseBody, new TypeReference<HireStatusResponse>() {} );
 
         assertThat(hireStatusResponse.getStatus()).isNotEmpty().as("The status is populated");
+        assertThat(hireStatusResponse.getStatus()).isEqualTo("Hired").as("The correct status is populated");
     }
 }

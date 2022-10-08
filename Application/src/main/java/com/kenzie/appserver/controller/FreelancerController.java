@@ -67,7 +67,6 @@ public class FreelancerController {
         return ResponseEntity.ok(responses);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<FreelancerResponse> updateFreelancer(@RequestBody FreelancerUpdateRequest request) {
         //if the freelancer that is being updated doesn't exist, returns 204
@@ -106,11 +105,11 @@ public class FreelancerController {
         return ResponseEntity.ok(hireStatusResponse);
     }
 
-    @PutMapping("/{id}/hirestatus")
-    public ResponseEntity<HireStatusResponse> updateHireStatus(@RequestBody HireStatusUpdateRequest request) {
+    @GetMapping("/{id}/random")
+    public ResponseEntity<HireStatusResponse> getHireStatusChange(@PathVariable("id") String id) {
+        HireStatus status = freelancerService.updateFreelancerHireStatus(id, "Hired");
         HireStatusResponse hireStatusResponse = new HireStatusResponse();
-        freelancerService.updateFreelancerHireStatus(request.getId(), request.getStatus());
-        hireStatusResponse.setStatus(request.getStatus());
+        hireStatusResponse.setStatus(status.getStatus());
         return ResponseEntity.ok(hireStatusResponse);
     }
 
