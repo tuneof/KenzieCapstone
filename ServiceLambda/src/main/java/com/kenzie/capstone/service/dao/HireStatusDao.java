@@ -9,7 +9,9 @@ import com.google.common.collect.ImmutableMap;
 import com.kenzie.capstone.service.model.HireStatus;
 import com.kenzie.capstone.service.model.HireStatusRecord;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HireStatusDao {
     private DynamoDBMapper mapper;
@@ -62,11 +64,16 @@ public class HireStatusDao {
     }
 
     public HireStatusRecord updateHireStatus(HireStatusRecord hireStatusRecord) {
-        mapper.save(hireStatusRecord, new DynamoDBSaveExpression()
-                .withExpected(ImmutableMap.of(
-                        "id",
-                        new ExpectedAttributeValue().withExists(true)
-                )));
+        try {
+            mapper.save(hireStatusRecord, new DynamoDBSaveExpression()
+                    .withExpected(ImmutableMap.of(
+                            "id",
+                            new ExpectedAttributeValue().withExists(true)
+                    )));
+        } catch (ConditionalCheckFailedException e) {
+            throw new IllegalArgumentException("FreelancerId does not exist");
+        }
+
         return hireStatusRecord;
     }
 }
